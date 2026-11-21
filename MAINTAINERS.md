@@ -23,7 +23,7 @@ Create rulesets for \`dev\`, \`beta\`, \`main\`: require pull requests and relev
 
 ## Known limitations / migration gate
 
-- App logo is temporarily referenced from GitHub source until the original binary is copied locally.
+- The exact original app logo is fetched during development checks/builds from an immutable OpenSigWeave commit, verified using its Git blob SHA, and bundled with the static site. Builds require GitHub raw access.
 - Static HTML and link checks must pass before promotion; do not assume they have passed from local source inspection.
 - Source documents remain in the app repository until the website is verified and application links are migrated in one coherent tested release.
 - GitHub Pages deployment is intentionally disabled on this branch. Real mail-client, DKIM and live identity acceptance belongs to OpenSigWeave, not the docs website.

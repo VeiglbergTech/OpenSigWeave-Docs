@@ -10,7 +10,9 @@
     "check": "astro check",
     "test:docs": "node scripts/check-docs.mjs",
     "test:links": "node scripts/check-links.mjs",
-    "test:security": "node scripts/check-security.mjs"
+    "test:security": "node scripts/check-security.mjs",
+    "precheck": "node scripts/fetch-assets.mjs",
+    "prebuild": "node scripts/fetch-assets.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

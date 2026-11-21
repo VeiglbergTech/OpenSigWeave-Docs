@@ -12,7 +12,7 @@ export default defineConfig({
       description: 'Official documentation for OpenSigWeave, the self-hosted email-signature management service.',
       // Original project logo, hosted in its GitHub source repository. Copy to a local
       // static asset before release once binary-asset transfer is available.
-      logo: { src: 'https://raw.githubusercontent.com/VeiglbergTech/OpenSigWeave/dev/branding/logo.png', alt: 'OpenSigWeave', replacesTitle: false },
+      logo: { src: './src/assets/opensigweave.png', alt: 'OpenSigWeave', replacesTitle: false },
       favicon: '/favicon.svg',
       customCss: ['./src/styles/theme.css'],
       editLink: { baseUrl: 'https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/' },

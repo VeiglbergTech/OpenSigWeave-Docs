@@ -24,7 +24,7 @@ install -m 0644 /path/to/OpenSigWeave/rspamd/opensigweave_mime.lua data/conf/rsp
 
 Add **one** `opensigweave` section to `data/conf/rspamd/rspamd.conf.local` (edit an existing section rather than duplicating it):
 
-```ucl
+```ini
 opensigweave {
     api_url = "https://signature.example.org/api/v1/engine/signatures/";
     engine_api_key = "REPLACE_WITH_DISTINCT_RANDOM_ENGINE_KEY_AT_LEAST_32_CHARS";

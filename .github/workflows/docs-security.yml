@@ -36,3 +36,4 @@ jobs:
           base: '62a9bbfc93a6790b272da7d7d7bc932dc72d667a'
           head: HEAD
           version: '3.90.0'
+          extra_args: '--results=verified'
