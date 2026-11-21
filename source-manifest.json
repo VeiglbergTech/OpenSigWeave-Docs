@@ -1,0 +1,26 @@
+{
+  "source": "VeiglbergTech/OpenSigWeave",
+  "ref": "dev",
+  "reviewedCommit": "1722583c75733ccab177316958e30726a1149a37",
+  "files": {
+    "README.md": "56754a75370d591a4aedaa30f3f068fd861f296b",
+    ".env.example": "ad6cadf52c905a14f95c4eeaded8d15412d256e5",
+    "compose.yaml": "256d115dd5521512197230959d3c9e0fac351bb8",
+    "main.py": "6c4920b5c5954e646bcee67d626a24d7864d31b7",
+    "models.py": "88206a33c1ac4864bcdc183a3cc0bd9ed9b950b4",
+    "docs/ADAPTERS.md": "ff17e556912b240a9f7f056822217e2e2675056d",
+    "docs/API.md": "edac5cdf8557503522334f8ef58cead33aa94fc4",
+    "docs/ARCHITECTURE.md": "87cc6bfd65024d3931cf0ecb9b797d145e4440dd",
+    "docs/BACKUP_RESTORE_DESIGN.md": "575977272703ee8007c0fb957ac3c00225c47d6a",
+    "docs/CLIENT_COMPATIBILITY.md": "fb44a92f51e6646b0b298fc69bf8acbefff0c80f",
+    "docs/CLI_API_V1.md": "cc02b2b87c99531467115c653d5d008aa5e5cfaf",
+    "docs/ENGINE_SERVICE.md": "da90d5f9f4eca7a72ecca53dd1cd078391c80046",
+    "docs/MAILCOW_RSPAMD_INTEGRATION.md": "cf7b675ed8daebb6652371ab081640a8732644cb",
+    "docs/RELEASE_NOTES_v2026.11.md": "f55ffd59b5124622d5576abd55dc21990abd8d51",
+    "docs/UPGRADE.md": "fcdbedc461ee2b4e96491c40a8b547fa5b89fd19",
+    "docs/POSTFIX_MILTER_DESIGN.md": "e145ba6b924fbcc7ae5ae8f0322fa49d1e3e12e1",
+    "docs/CROSS_HOST_RESTORE_DRILL.md": "19b9c65bf35c645aad9bb93624e76ed0ccba44b6",
+    "core/engine_service.py": "99eafe4e623bf056f0399f71f3bb2283971c37aa",
+    "rspamd/opensigweave.lua": "fbeb5055f476b50c2a57bba2fda192cc0e96564e"
+  }
+}
