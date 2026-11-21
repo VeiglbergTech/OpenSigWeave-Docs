@@ -1,9 +1,9 @@
 {
   "source": "VeiglbergTech/OpenSigWeave",
   "ref": "dev",
-  "reviewedCommit": "0d8f11c158f154c4212fbd834c90c8d569d19468",
+  "reviewedCommit": "b6c028f5b6174d3c8730861a0c5498b7290ee015",
   "files": {
-    "README.md": "fcd62c243a6ab41b7ebd6f12164345a312d84be4",
+    "README.md": "7583d11acfbe2ec36fbb0b1223eaab3aeb1c6da2",
     ".env.example": "ad6cadf52c905a14f95c4eeaded8d15412d256e5",
     "compose.yaml": "256d115dd5521512197230959d3c9e0fac351bb8",
     "main.py": "6c4920b5c5954e646bcee67d626a24d7864d31b7",

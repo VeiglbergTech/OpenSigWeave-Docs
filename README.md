@@ -19,3 +19,5 @@ Dependencies are pinned by the committed npm lockfile, with immutable pinned Git
 ## Publication gate
 
 Never deploy from \`dev\` or \`beta\`. \`main\` deployment is prepared but gated by the GitHub Pages environment and manual release approval. Required GitHub repository settings and DNS are documented in \`MAINTAINERS.md\`.
+
+Documentation is distributed under [GPL-3.0](LICENSE), consistent with the application repository.
