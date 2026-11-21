@@ -27,6 +27,10 @@ try {
    const body=await response.text();
    if(!body.includes(needle))throw new Error(route+' did not render expected title');
  }
+ // Fetch this before launching multiple Chromium processes. Node HTTP keep-alive
+ // sockets can become stale while Chromium workloads occupy the runner.
+ const logo=await fetch(host+'/favicon.svg',{headers:{Connection:'close'}});
+ if(!logo.ok)throw new Error('Website favicon was not served');
  function chromeDom(route,width,height){
    const args=['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--disable-background-networking','--no-first-run','--hide-scrollbars','--window-size='+width+','+height,'--virtual-time-budget=2000','--dump-dom',host+route];
    const r=spawnSync(chrome,args,{encoding:'utf8',timeout:45000,maxBuffer:20*1024*1024});
@@ -40,8 +44,7 @@ try {
  // Verify a recognizable dark-mode initialization is present and the theme
  // chooser remains part of Starlight rather than being removed by customization.
  if(!desktop.includes('data-theme="dark"')&&!desktop.includes('data-theme=dark'))throw new Error('Expected dark theme as default');
- const logo=await fetch(host+'/favicon.svg');
- if(!logo.ok)throw new Error('Website favicon was not served');
+
  console.log('Browser smoke passed: four routes, Chromium desktop/mobile, dark theme and favicon');
 } finally {
  server.kill('SIGTERM');
