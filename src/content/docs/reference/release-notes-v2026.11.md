@@ -54,4 +54,4 @@ description: Reviewed source documentation from the OpenSigWeave development bra
 - No live Authentik/LDAPS acceptance, cross-host disaster-recovery drill, real NFS/SMB outage test, dynamic penetration test, sustained load test or all-browser CSP enforcement has been certified.
 - No recurring schedules, nested LDAP group expansion, SCIM provisioning, full CLI/Web parity, or Outlook VML delivery support.
 
-**Release authority:** These notes may be prepared or edited on `dev`. Promotion to `main`, creation of a `v1.0` tag or publication of a GitHub Release requires an explicit, separate maintainer approval after the [release acceptance checklist](RELEASE_ACCEPTANCE_v2026.11.md) has been completed. No approval is implied by green GitHub Actions.
+**Release authority:** These notes may be prepared or edited on `dev`. Promotion to `main`, creation of a `v1.0` tag or publication of a GitHub Release requires an explicit, separate maintainer approval after the [release acceptance checklist](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/RELEASE_ACCEPTANCE_v2026.11.md) has been completed. No approval is implied by green GitHub Actions.

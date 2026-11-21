@@ -77,4 +77,4 @@ Only enable the staged Mailcow/Rspamd, Postfix or Stalwart adapter after its doc
 4. Keep the original deployment untouched for investigation. Restore instructions and a two-host drill are in [CROSS_HOST_RESTORE_DRILL.md](/reference/cross-host-restore-drill/). A same-host CI restore is not cross-host evidence.
 5. Roll back a disposable Mailcow adapter independently using the removal/configuration procedure in [MAILCOW_RSPAMD_INTEGRATION.md](/reference/mailcow-rspamd-integration/), then recheck normal mail delivery and DKIM.
 
-Do not promote to `main`, create a tag or publish a GitHub Release until a maintainer has reviewed the [manual acceptance record](RELEASE_ACCEPTANCE_v2026.11.md) and explicitly authorized it.
+Do not promote to `main`, create a tag or publish a GitHub Release until a maintainer has reviewed the [manual acceptance record](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/RELEASE_ACCEPTANCE_v2026.11.md) and explicitly authorized it.

@@ -31,6 +31,8 @@ jobs:
       - name: Sensitive-content pattern scan
         run: npm run test:security
       - name: Credential history scan
-        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2 pinned
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: trufflesecurity/trufflehog@eafb8c5f6a06175141c27f17bcc17941853d0047 # v3.90.0 pinned
+        with:
+          base: '62a9bbfc93a6790b272da7d7d7bc932dc72d667a'
+          head: HEAD
+          version: '3.90.0'
