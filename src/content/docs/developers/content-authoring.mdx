@@ -1,0 +1,21 @@
+---
+title: Writing documentation
+description: Markdown and MDX authoring in Starlight.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Starlight supports plain Markdown pages and MDX pages with built-in components. Keep content static and do not embed private credentials or runtime application dependencies.
+
+<CardGrid>
+  <Card title="Markdown" icon="document">
+    Prefer Markdown for normal text, code samples, admonitions and internal navigation.
+  </Card>
+  <Card title="MDX" icon="puzzle">
+    Use MDX sparingly when a documented built-in component materially improves clarity.
+  </Card>
+</CardGrid>
+
+## Edit and validation
+
+Edit content in `src/content/docs/` on `dev`, run `npm run build`, `npm run test:docs` and `npm run test:links`. Never bypass security CI or automatically promote to `main`.
