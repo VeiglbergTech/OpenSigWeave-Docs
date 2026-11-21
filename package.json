@@ -12,7 +12,8 @@
     "test:links": "node scripts/check-links.mjs",
     "test:security": "node scripts/check-security.mjs",
     "precheck": "node scripts/fetch-assets.mjs",
-    "prebuild": "node scripts/fetch-assets.mjs"
+    "prebuild": "node scripts/fetch-assets.mjs",
+    "test:browser": "node scripts/browser-smoke.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

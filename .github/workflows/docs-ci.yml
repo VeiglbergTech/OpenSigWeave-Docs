@@ -32,6 +32,8 @@ jobs:
         run: npm run build
       - name: Check generated routes and images
         run: npm run test:links
+      - name: Headless browser checks (desktop and mobile)
+        run: npm run test:browser
       - name: Detect source code and docs drift
         run: |
           git clone --depth 1 --branch dev https://github.com/VeiglbergTech/OpenSigWeave.git "$RUNNER_TEMP/OpenSigWeave"
