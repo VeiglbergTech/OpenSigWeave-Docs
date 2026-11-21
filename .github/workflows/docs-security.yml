@@ -30,6 +30,8 @@ jobs:
           npm audit --audit-level=high
       - name: Sensitive-content pattern scan
         run: npm run test:security
+      - name: Workflow policy scan
+        run: npm run test:workflows
       - name: Credential history scan
         uses: trufflesecurity/trufflehog@eafb8c5f6a06175141c27f17bcc17941853d0047 # v3.90.0 pinned
         with:

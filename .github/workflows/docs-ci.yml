@@ -32,6 +32,8 @@ jobs:
         run: npm run build
       - name: Check generated routes and images
         run: npm run test:links
+      - name: Validate workflow permissions and release gates
+        run: npm run test:workflows
       - name: Headless browser checks (desktop and mobile)
         run: npm run test:browser
       - name: Detect source code and docs drift
