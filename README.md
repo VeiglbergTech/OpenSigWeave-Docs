@@ -1,5 +1,21 @@
-# OpenSigWeave Documentation
+# OpenSigWeave documentation
 
-Development source for the future static documentation website.
+Astro + Starlight static documentation source for the OpenSigWeave project.
 
-Publication to GitHub Pages is disabled until the project owner approves promotion to `main`.
+**Status:** Under development on \`dev\`. No public Pages deployment has been approved. \`main\` must not be updated before manual approval and actual beta testing.
+
+- Source application: [VeiglbergTech/OpenSigWeave](https://github.com/VeiglbergTech/OpenSigWeave)
+- Future documentation URL: https://docs.veiglbergtech.com
+- Deployment: GitHub Actions → GitHub Pages, only on \`main\`
+- Documentation source: \`src/content/docs/\`
+- Project migration evidence: \`MIGRATION_MANIFEST.md\`
+
+## Development
+
+Node.js 22.12 or later. Run \`npm install\`, \`npm run dev\`, \`npm run build\`, \`npm run test:docs\`, \`npm run test:links\` and \`npm run test:security\`.
+
+The dependency lockfile and end-to-end build must be generated and checked by CI before promotion. Build output is intentionally not committed.
+
+## Publication gate
+
+Never deploy from \`dev\` or \`beta\`. \`main\` deployment is prepared but gated by the GitHub Pages environment and manual release approval. Required GitHub repository settings and DNS are documented in \`MAINTAINERS.md\`.

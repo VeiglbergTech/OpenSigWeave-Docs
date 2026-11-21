@@ -1,0 +1,22 @@
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #481d15;
+  --sl-color-accent: #ff7046;
+  --sl-color-accent-high: #ffd0bd;
+  --sl-color-bg: #101114;
+  --sl-color-bg-nav: #15161b;
+  --sl-color-bg-sidebar: #15161b;
+  --sl-color-hairline: #303038;
+  --sl-color-text: #ececf0;
+}
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ffdfd2;
+  --sl-color-accent: #a83316;
+  --sl-color-accent-high: #521808;
+  --sl-color-bg: #faf9f8;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #f3f1f0;
+  --sl-color-hairline: #e4ddda;
+}
+.sl-markdown-content a { text-underline-offset: 0.18em; }
+.sl-markdown-content :is(h2,h3) { scroll-margin-top: 5.5rem; }
+.site-title { font-weight: 750; letter-spacing: -0.02em; }
