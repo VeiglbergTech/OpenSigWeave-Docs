@@ -7,4 +7,4 @@ The v2026.11 candidate retires the legacy AUTO/INTERNAL/PROFESSIONAL signature m
 
 Other possible breaking points include identity-provider setup, management and engine key separation, image asset HTTPS reachability, persistent volumes and Alembic schema changes.
 
-Review the [candidate release notes](/reference/release-notes-v2026.11/) and [upgrade guide](/reference/upgrade/) for the verified code baseline before making changes.
+Review the [candidate release notes](/reference/release-notes-v202611/) and [upgrade guide](/reference/upgrade/) for the verified code baseline before making changes.
