@@ -23,13 +23,7 @@ jobs:
           path: ~/.npm
           key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
       - name: Install dependencies
-        run: npm install --no-fund --no-audit
-      - name: Record generated package lockfile for reproducible dependency pinning
-        run: |
-          echo 'OPEN_SIG_LOCKFILE_BEGIN'
-          base64 -w0 package-lock.json | fold -w 950
-          echo
-          echo 'OPEN_SIG_LOCKFILE_END'
+        run: npm ci --no-fund --no-audit
       - name: Markdown, navigation and source links
         run: npm run test:docs
       - name: Astro diagnostics

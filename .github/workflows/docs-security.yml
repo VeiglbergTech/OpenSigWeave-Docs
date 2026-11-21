@@ -26,7 +26,7 @@ jobs:
           key: npm-${{ runner.os }}-${{ hashFiles('package.json', 'package-lock.json') }}
       - name: Dependency security audit
         run: |
-          npm install --no-fund --no-audit
+          npm ci --no-fund --no-audit
           npm audit --audit-level=high
       - name: Sensitive-content pattern scan
         run: npm run test:security

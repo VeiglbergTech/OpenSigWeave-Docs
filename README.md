@@ -14,7 +14,7 @@ Astro + Starlight static documentation source for the OpenSigWeave project.
 
 Node.js 22.12 or later. Run \`npm install\`, \`npm run dev\`, \`npm run build\`, \`npm run test:docs\`, \`npm run test:links\` and \`npm run test:security\`.
 
-The dependency lockfile and end-to-end build must be generated and checked by CI before promotion. Build output is intentionally not committed.
+Dependencies are pinned by the committed npm lockfile, with immutable pinned GitHub Actions and a high-severity vulnerability audit. Build output is intentionally not committed.
 
 ## Publication gate
 

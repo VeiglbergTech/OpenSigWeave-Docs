@@ -23,12 +23,13 @@ jobs:
           node-version: '22'
       - name: Install and validate
         run: |
-          npm install --no-fund --no-audit
+          npm ci --no-fund --no-audit
           npm run test:docs
           npm run check
           npm run build
           npm run test:links
           npm run test:security
+          npm audit --audit-level=high
       - name: Configure Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5 pinned
       - name: Upload Pages artifact
