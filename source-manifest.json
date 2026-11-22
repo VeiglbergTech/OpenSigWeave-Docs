@@ -1,26 +1,26 @@
 {
   "source": "VeiglbergTech/OpenSigWeave",
   "ref": "dev",
-  "reviewedCommit": "b6c028f5b6174d3c8730861a0c5498b7290ee015",
+  "reviewedCommit": "d5a40137b0150e19281f6e77169ab79a698617c4",
   "files": {
-    "README.md": "7583d11acfbe2ec36fbb0b1223eaab3aeb1c6da2",
-    ".env.example": "ad6cadf52c905a14f95c4eeaded8d15412d256e5",
-    "compose.yaml": "256d115dd5521512197230959d3c9e0fac351bb8",
-    "main.py": "6c4920b5c5954e646bcee67d626a24d7864d31b7",
+    "README.md": "bd9bcf102325eaa0aeeed05e1a8e0caa8fca5409",
+    ".env.example": "efde7e18155b5b959e6198dd29c0010d030e1113",
+    "compose.yaml": "210bbbe9afee94db8a25cdca7a4a52836dac7e23",
+    "main.py": "52a639c99317a52c5170c314f3f220d211251bd0",
     "models.py": "88206a33c1ac4864bcdc183a3cc0bd9ed9b950b4",
     "docs/ADAPTERS.md": "ff17e556912b240a9f7f056822217e2e2675056d",
-    "docs/API.md": "edac5cdf8557503522334f8ef58cead33aa94fc4",
+    "docs/API.md": "e1385d056d4e06609532dca2d7adc36b42b14e6a",
     "docs/ARCHITECTURE.md": "87cc6bfd65024d3931cf0ecb9b797d145e4440dd",
     "docs/BACKUP_RESTORE_DESIGN.md": "575977272703ee8007c0fb957ac3c00225c47d6a",
     "docs/CLIENT_COMPATIBILITY.md": "fb44a92f51e6646b0b298fc69bf8acbefff0c80f",
     "docs/CLI_API_V1.md": "cc02b2b87c99531467115c653d5d008aa5e5cfaf",
     "docs/ENGINE_SERVICE.md": "da90d5f9f4eca7a72ecca53dd1cd078391c80046",
-    "docs/MAILCOW_RSPAMD_INTEGRATION.md": "cf7b675ed8daebb6652371ab081640a8732644cb",
+    "docs/MAILCOW_RSPAMD_INTEGRATION.md": "8d45f0fdf212cf96abb710ffeed16294015a280e",
     "docs/RELEASE_NOTES_v2026.11.md": "f55ffd59b5124622d5576abd55dc21990abd8d51",
-    "docs/UPGRADE.md": "fcdbedc461ee2b4e96491c40a8b547fa5b89fd19",
+    "docs/UPGRADE.md": "8ece5c0848a9117a7c7397bc56c33de3122ae9a0",
     "docs/POSTFIX_MILTER_DESIGN.md": "e145ba6b924fbcc7ae5ae8f0322fa49d1e3e12e1",
     "docs/CROSS_HOST_RESTORE_DRILL.md": "19b9c65bf35c645aad9bb93624e76ed0ccba44b6",
-    "core/engine_service.py": "99eafe4e623bf056f0399f71f3bb2283971c37aa",
-    "rspamd/opensigweave.lua": "fbeb5055f476b50c2a57bba2fda192cc0e96564e"
+    "core/engine_service.py": "c85b40127986c0043cbd39beb8a84ef502b18d6f",
+    "rspamd/opensigweave.lua": "7cc7e1a86370a91a1c839ca66874a0385bb68ec8"
   }
 }
