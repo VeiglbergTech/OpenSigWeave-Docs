@@ -1,12 +1,19 @@
 ---
-title: "Disaster recovery restore"
-description: "Restore a tested archive to a fresh system"
+title: "Safe restore"
+description: "Restore an age-verified backup into a fresh Docker Compose target."
 ---
 
-A **full restore** differs from restoring a signature version or importing a selective configuration ZIP. It must bring back the database, assets, versions and identity provider state together.
+A failed database migration is **not** a reason to downgrade the app's source and restart it against a new schema. Use a verified archive and restore into a **fresh** target instead of overwriting existing production volumes.
 
-Use the restore CLI only in the documented isolated/fresh-deployment scenario. Keep the encrypted archive and age private identity separate, inspect the expected restore target and avoid overwriting healthy running volumes by accident.
+```bash
+python3 backup_cli.py verify /path/to/backup.age \
+  --identity /media/offline/opensigweave-age-identity.txt
+python3 backup_cli.py restore /path/to/backup.age \
+  --identity /media/offline/opensigweave-age-identity.txt \
+  --target-dir /srv/opensigweave-recovered \
+  --project-name opensigweave-recovered
+```
 
-After restoring, confirm database migrations, portal login, required provider connections, asset URLs, historical signature previews and staging mail transport.
+Keep routing/DNS pointed at the original service until you have checked the restored application's health, administrator login, signature files and history, identity-provider settings, rules, rotation, schedules and adapter contract in an isolated environment. The full restore is a deliberate separate operation; `update.sh` never invokes it automatically.
 
-**Verification status:** automated encrypted backup and fresh restore tests exist; real cross-host, destructive and mounted NFS/SMB restore drills remain outstanding. Consult the [restore drill](/reference/cross-host-restore-drill/).
+Read [Recovery reference](/reference/upgrade/) and [Restore drill](/reference/cross-host-restore-drill/).

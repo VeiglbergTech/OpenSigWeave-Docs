@@ -1,20 +1,20 @@
 ---
-title: "First configuration"
-description: "Initial identity, domain and security setup."
+title: "Configuration generator"
+description: "Create and safely review the local .env file."
 ---
 
-## Required settings
+Run `./generate_config.sh` before a first installation, or let `./install.sh` run the same interactive generator. Administrator passwords are read without echo, confirmed and stored exclusively as scrypt hashes. PostgreSQL, session and engine credentials are generated independently.
 
-Set at least \`POSTGRES_PASSWORD\`, \`SECRET_KEY\`, \`ENGINE_API_KEY\`, \`APP_ALLOWED_HOSTS\`, \`LOCAL_ADMIN_EMAIL\` and \`LOCAL_ADMIN_PASSWORD_HASH\`. Generate random values separately for each application secret and keep the \`.env\` file mode \`0600\`.
+```bash
+./generate_config.sh             # create .env only if absent
+./generate_config.sh --check     # validate existing .env without changes
+./generate_config.sh --preview   # list proposed safe optional additions only
+./generate_config.sh --migrate   # confirm and append missing safe defaults
+./generate_config.sh --migrate --yes  # controlled automation of optional additions
+```
 
-\`MANAGEMENT_API_KEY\` is optional and enables full administrator API automation. Leave it unset unless there is a specific trusted consumer.
+The generator refuses to replace or regenerate an existing file and refuses symlinks or duplicate settings. Migration does not rotate existing credentials and writes changes atomically with mode 0600. Missing required secret, FQDN or administrator credentials are not guessed; add them manually under administrator control before retrying. Review any new configuration keys and firewall/proxy changes separately.
 
-## First administrator session
+The application supports local authentication and administrator-configured identity providers; the installer does not modify their database records or persistent credential volume. Never put age private keys, live `.env` or identity-provider tokens into Git.
 
-1. Sign in as the locally configured emergency administrator.
-2. Add managed OIDC and/or LDAP providers only if needed.
-3. Under **Domains**, associate each domain with login/profile providers as appropriate.
-4. Configure user group membership, then test a nonadministrator login.
-5. Add signatures and rules, then test using a staging mailserver.
-
-OIDC redirect paths follow \`https://<portal-host>/auth/<provider-id>\`. All identity-provider connections must validate certificates. Details: [identity and API reference](/reference/api/).
+For continuous operation follow [Safe updates](/installation/updates/) and [Backup](/operations/backup/).

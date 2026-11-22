@@ -1,17 +1,20 @@
 ---
-title: "Encrypted full backup"
-description: "Protect database, assets, identity settings and images"
+title: "Encrypted backups"
+description: "Disaster recovery with the existing host-side age backup tool."
 ---
 
-The application's backup tooling can build a full disaster-recovery archive including the database, signature history, immutable image assets, provider configuration and the image state needed for a new deployment.
+The existing `backup_cli.py create` command takes a consistent complete snapshot: PostgreSQL (including domains, rules, rotation, schedules, versions and branding), the signature volume, the managed identity-provider credential volume, Compose metadata, encrypted application configuration and application/database image metadata. It stops the web application temporarily, encrypts the archive using age, verifies it by decrypting, then restarts the application.
 
-Full backups are operator-controlled and **age-encrypted** using an independent encryption identity. Keep the age private key **off the application host** and perform verification before considering a backup usable. A UI ZIP export is **not** a complete backup.
+```bash
+python3 backup_cli.py create --project-dir "$PWD" \
+  --output /mnt/opensigweave-backups/backup-2026-11-22.age \
+  --recipient age1YOUR_ACTUAL_PUBLIC_RECIPIENT \
+  --identity /media/offline/opensigweave-age-identity.txt
+python3 backup_cli.py verify \
+  /mnt/opensigweave-backups/backup-2026-11-22.age \
+  --identity /media/offline/opensigweave-age-identity.txt
+```
 
-## Suggested operational procedure
+The private age identity file must be protected (0600), kept outside `.env` and Git, and recoverable independently of the failed host. The update manager requires [separate backup configuration](/installation/updates/) pointing to remote mounted storage. A web UI export is **not** a replacement for the encrypted full disaster-recovery backup.
 
-1. Verify \`docker compose ps\` and available storage.
-2. Follow the backup CLI help for the installed application commit and use a separately mounted backup destination.
-3. Verify the archive and retain multiple tested restore points.
-4. Perform a cross-host restore drill in disposable infrastructure.
-
-See the [backup technical reference](/reference/backup-restore-design/) and [cross-host drill](/reference/cross-host-restore-drill/) for command-level procedures and remaining verification limits.
+Test restoration on a separate host before production release. See [Restore](/operations/restore/) and [Full design](/reference/backup-restore-design/).

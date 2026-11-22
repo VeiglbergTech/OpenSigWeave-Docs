@@ -1,26 +1,29 @@
 ---
-title: "Docker Compose"
-description: "Compose topology and container startup."
+title: "Docker Compose installation"
+description: "Install or resume the standalone OpenSigWeave stack."
 ---
 
-The [tracked Compose stack](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/compose.yaml) runs \`postgres\` and \`opensigweave\`. The web container is built from the local checkout, not pulled from an automatically published \`dev\` or \`beta\` image.
+## Supported standalone installation
 
-## Deployment
+A Linux x86_64/aarch64 host with Docker Engine 24+, Docker Compose v2.20+, Git, Python 3, at least 2 GiB RAM, 6 GiB available disk space, and access to the public repository is required. Keep additional space on a *separate remote filesystem* for encrypted backups. Docker permissions must already be granted to the operator; the installer does not install packages or change your firewall.
 
-\`\`\`bash
-git clone --branch beta --single-branch https://github.com/VeiglbergTech/OpenSigWeave.git
+```bash
+git clone https://github.com/VeiglbergTech/OpenSigWeave.git
 cd OpenSigWeave
-cp .env.example .env
-chmod 600 .env
-# Configure all required secrets and the local admin password hash.
-docker compose config --quiet
-docker compose up -d --build
-\`\`\`
+./install.sh
+```
 
-## Persistent volumes
+The installer asks the current channel (which must match the existing Git checkout), public FQDN, bind IP, host port, local administrator address and confirmed password. It generates **three independent cryptographic secrets** and hashes the administrator password using the application's existing scrypt algorithm. Credentials are not printed. The `.env` file is created with permissions 0600 and must never be committed.
 
-- \`opensigweave-postgres-data\` — PostgreSQL state.
-- \`opensigweave-signatures\` — templates, versions and image assets.
-- \`opensigweave-idp-data\` — managed provider settings, including secrets.
+For a non-default channel, clone that branch explicitly:
 
-**Never** delete these volumes as part of a routine update. The application container uses a read-only root filesystem and drops Linux capabilities. Follow [backup instructions](/operations/backup/) first.
+```bash
+git clone --branch beta https://github.com/VeiglbergTech/OpenSigWeave.git
+# or: git clone --branch dev https://github.com/VeiglbergTech/OpenSigWeave.git
+```
+
+`dev` and `beta` are not production-approved releases. The installer does not automatically switch branches. After validating Docker Compose, it starts PostgreSQL, builds the application locally and waits for database and app healthchecks, Alembic and basic volume availability. On partial failure, existing configuration and Docker volumes remain; fix the cause and rerun `./install.sh`. An already healthy installation is not overwritten.
+
+A same-host reverse proxy should connect to `127.0.0.1:8085` by default. The public URL must use HTTPS, terminated by that proxy. If the proxy is remote, use the host's **private bind IP** and firewall-allow only the proxy. The container still listens on port 8085; `APP_PORT` changes only the **host** port mapping.
+
+This Compose project is independent of mailcow and does not change any mail server. See [First configuration](/installation/first-configuration/) and [Safe updates](/installation/updates/).
