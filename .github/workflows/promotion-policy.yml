@@ -32,13 +32,36 @@ jobs:
           esac
           latest="$(gh api "repos/$GH_REPO/branches/$SOURCE_BRANCH" --jq '.commit.sha')"
           [[ "$latest" == "$SOURCE_SHA" ]] || { echo "::error::Source branch moved"; exit 1; }
-          response="$(gh api "repos/$GH_REPO/actions/runs?branch=$SOURCE_BRANCH&head_sha=$SOURCE_SHA&event=push&per_page=100")"
-          for workflow in docs-ci.yml docs-security.yml; do
-            jq -e --arg p ".github/workflows/$workflow" '
+          # Pull-request policy and push CI run concurrently. Poll for the source
+          # branch's exact-SHA push checks instead of failing while they are queued.
+          # Never treat missing, cancelled or failed checks as approval.
+          check_workflow() {
+            local workflow="$1"
+            jq -r --arg p ".github/workflows/$workflow" '
               [.workflow_runs[] | select(.path == $p)] as $found |
-              ($found | length > 0) and ($found | all(.status == "completed" and .conclusion == "success"))
-            ' <<< "$response" >/dev/null || {
-              echo "::error::Source $SOURCE_BRANCH@$SOURCE_SHA lacks successful $workflow"; exit 1;
-            }
+              if ($found | length) == 0 then "pending"
+              elif any($found[]; .status == "completed" and .conclusion != "success") then "failed"
+              elif all($found[]; .status == "completed" and .conclusion == "success") then "passed"
+              else "pending"
+              end
+            ' <<< "$response"
+          }
+          for attempt in {1..24}; do
+            response="$(gh api "repos/$GH_REPO/actions/runs?branch=$SOURCE_BRANCH&head_sha=$SOURCE_SHA&event=push&per_page=100")"
+            ci="$(check_workflow docs-ci.yml)"
+            security="$(check_workflow docs-security.yml)"
+            if [[ "$ci" == "failed" || "$security" == "failed" ]]; then
+              echo "::error::Source $SOURCE_BRANCH@$SOURCE_SHA has failed push checks (CI=$ci, security=$security)"
+              exit 1
+            fi
+            if [[ "$ci" == "passed" && "$security" == "passed" ]]; then
+              echo "Successful source push checks confirmed on attempt $attempt"
+              break
+            fi
+            if (( attempt == 24 )); then
+              echo "::error::Timed out waiting for exact-SHA push checks (CI=$ci, security=$security)"
+              exit 1
+            fi
+            sleep 5
           done
           echo "CI source gate verified; human review and beta acceptance remain required by GitHub rulesets."
