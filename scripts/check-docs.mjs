@@ -42,5 +42,5 @@ for(const p of pages.filter(p=>path.relative(root,p).replaceAll('\\','/').starts
  const relative=path.relative(root,p).replaceAll('\\','/').slice(3);
  if(!fs.existsSync(path.join(root,relative)))errors.push(relative+': orphan German translation');
 }
-\nif(errors.length){console.error(errors.join('\n'));process.exitCode=1}else console.log('Bilingual Markdown navigation and links passed: '+pages.length+' pages');
+if(errors.length){console.error(errors.join('\n'));process.exitCode=1}else console.log('Bilingual Markdown navigation and links passed: '+pages.length+' pages');
 

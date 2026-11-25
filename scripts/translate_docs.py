@@ -64,7 +64,6 @@ def linked(text: str) -> str:
         out.append(translated(text[cursor:m.start()]))
         target = m.group(2)
         # Preserve anchors, query strings and API/asset paths.
-        path, sep, suffix = re.match(r"([^?#]*)(.*)", target).groups()[0], None, None
         match = re.match(r"([^?#]*)(.*)", target)
         target = de_path(match.group(1)) + match.group(2)
         out.append("[" + translated(m.group(1)) + "](" + target + ")")
@@ -73,7 +72,7 @@ def linked(text: str) -> str:
     return "".join(out)
 
 def line_translate(line: str) -> str:
-    if not line.strip():
+    if not line.strip() or line.startswith("    ") or line.startswith("\\t"):
         return line
     if line.lstrip().startswith(("<!--", "-->", "import ", "export ", "<Card", "</Card", "<CardGrid", "</CardGrid")):
         return line

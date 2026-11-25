@@ -51,9 +51,13 @@ try {
  // chooses a theme; do not store a default theme automatically.
  if(!/data-theme=["'](?:dark|light)["']/.test(desktop))throw new Error('Expected resolved Starlight theme');
  for(const legal of ['impressum','datenschutz','markenhinweise']){
-   if(!desktop.includes('href="/'+legal+'/"/>')&&!desktop.includes('href="/'+legal+'/"'))throw new Error('Desktop legal footer link missing: '+legal);
-   if(!mobile.includes('href="/'+legal+'/"/>')&&!mobile.includes('href="/'+legal+'/"'))throw new Error('Mobile legal footer link missing: '+legal);
+   if(!desktop.includes('href="/'+legal+'/'))throw new Error('English desktop legal link missing: '+legal);
+   if(!mobile.includes('href="/'+legal+'/'))throw new Error('English mobile legal link missing: '+legal);
  }
+ const german=chromeDom('/de/getting-started/quickstart/',390,844);
+ if(!german.includes('lang="de"'))throw new Error('German HTML lang attribute missing');
+ if(!german.includes('href="/de/impressum/"'))throw new Error('German legal footer link missing');
+ if(!desktop.includes('Deutsch') || !german.includes('English'))throw new Error('Language switcher not detected');
  console.log('Browser smoke passed: bilingual routes, Chromium desktop/mobile, accessible legal footer, theme preference and official favicon');
 } finally {
  server.kill('SIGTERM');
