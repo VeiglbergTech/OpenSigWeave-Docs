@@ -7,4 +7,4 @@ A **signature group** selects among eligible signatures and can be used as a rul
 
 Do not assume that random rotation guarantees equal distribution for small samples. Validate group member status and domain scope before enabling a rule.
 
-Group templates can also be used in supported nested rendering patterns. Read the [engine details](/reference/engine-service/) and [rule behavior](/administration/rules/).
+The rule target may be a group, and previews must not advance the live rotation history. Internal group tags and compatibility syntax are not a required manual editing step. Read the [engine details](/reference/engine-service/) and [rule behavior](/administration/rules/).

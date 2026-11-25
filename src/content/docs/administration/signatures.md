@@ -7,6 +7,6 @@ The signature catalog has stable records and immutable HTML history. Create a te
 
 ## Images
 
-PNG, JPEG and WebP files can be added via drag-and-drop, clipboard paste or editor toolbar (GIF for compatibility). The server stores immutable image assets, referenced with HTTPS URLs under \`/signature-assets/\`. The editor rejects oversized and invalid uploads; the documented maximum is **2 MiB**.
+PNG, JPEG and WebP images can be added through supported editor upload mechanisms; the shared CKEditor toolbar also provides font family, size, bold and italic controls. The server stores immutable image assets, referenced with HTTPS URLs under `/signature-assets/`. The editor rejects oversized and invalid uploads; the default image limit is **6 MiB**, optionally **12 MiB** after enabling large uploads in the application settings.
 
-Recipients must be able to fetch assets anonymously, even if the administration portal sits behind proxy SSO. Never use temporary \`blob:\` URLs or inline large Base64 images. See [version history](/administration/versions/) and [reverse proxy](/installation/reverse-proxy/).
+Recipients must be able to fetch assets anonymously, even if the administration portal sits behind proxy SSO. Never use temporary `blob:` URLs or inline large Base64 images. See [version history](/administration/versions/) and [reverse proxy](/installation/reverse-proxy/).
