@@ -15,6 +15,16 @@ const p=path.join(dist,decodeURIComponent(u.pathname).replace(/^\/+/,''));
 if(![p,path.join(p,'index.html'),p+'.html'].some(f=>fs.existsSync(f)&&fs.statSync(f).isFile()))errors.push(path.relative(dist,page)+': missing '+url);
 }
 }
+// Legal notices must be generated and linked from the footer on every route.
+for(const legal of ['impressum','datenschutz','markenhinweise']){
+ if(!fs.existsSync(path.join(dist,legal,'index.html')))errors.push('missing legal route /'+legal+'/');
+}
+for(const page of pages){
+ const html=fs.readFileSync(page,'utf8');
+ for(const legal of ['impressum','datenschutz','markenhinweise']){
+  if(!html.includes('href="/'+legal+'/"'))errors.push(path.relative(dist,page)+': missing legal footer link /'+legal+'/');
+ }
+}
 for(const file of ['sitemap-index.xml','CNAME','robots.txt','favicon.png'])if(!fs.existsSync(path.join(dist,file)))errors.push('missing '+file);
 if(pages.length<40)errors.push('expected 40+ pages');
 // The deployed browser favicon must match the project logo exactly, not a placeholder.

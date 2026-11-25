@@ -1,0 +1,39 @@
+---
+import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+---
+
+<DefaultFooter><slot /></DefaultFooter>
+
+<nav class="legal-footer" aria-label="Rechtliche Informationen">
+  <a href="/impressum/">Impressum</a>
+  <a href="/datenschutz/">Datenschutz</a>
+  <a href="/markenhinweise/">Markenhinweise</a>
+  <span>OpenSigWeave · Unabhängiges Open-Source-Projekt</span>
+</nav>
+
+<style>
+  .legal-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.4rem;
+    margin-block: 1rem 2rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--sl-color-hairline);
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-sm);
+  }
+  .legal-footer a {
+    color: var(--sl-color-text-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .legal-footer a:hover,
+  .legal-footer a:focus-visible {
+    color: var(--sl-color-white);
+  }
+  .legal-footer span { margin-inline-start: auto; }
+  @media (max-width: 50rem) {
+    .legal-footer span { margin-inline-start: 0; width: 100%; }
+  }
+</style>

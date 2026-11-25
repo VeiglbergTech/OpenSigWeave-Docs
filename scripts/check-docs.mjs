@@ -23,4 +23,14 @@ for(const group of ['getting-started','installation','administration','operation
 if(!cfg.includes("directory: '"+group+"'"))errors.push('Missing sidebar '+group);
 if(!pages.some(p=>path.relative(root,p).replaceAll('\\','/').startsWith(group+'/')))errors.push('Empty sidebar '+group);
 }
+// Statutory notices must exist and be directly linked on every page.
+for(const legal of ['impressum','datenschutz','markenhinweise']){
+ if(!pages.some(p=>path.relative(root,p)===legal+'.md'))errors.push('Missing legal page: '+legal);
+}
+if(!cfg.includes("Footer: './src/components/LegalFooter.astro'"))errors.push('Missing global legal footer override');
+const legalFooter=fs.readFileSync('src/components/LegalFooter.astro','utf8');
+for(const legal of ['impressum','datenschutz','markenhinweise']){
+ if(!legalFooter.includes('href="/'+legal+'/"'))errors.push('Missing permanent footer link: '+legal);
+}
+if(cfg.includes("localStorage.setItem('starlight-theme', 'dark')"))errors.push('Do not persist an unsolicited theme preference');
 if(errors.length){console.error(errors.join('\n'));process.exitCode=1}else console.log('Markdown navigation and links passed: '+pages.length+' pages');

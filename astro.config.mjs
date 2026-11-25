@@ -14,6 +14,7 @@ export default defineConfig({
       logo: { src: './src/assets/opensigweave.png', alt: 'OpenSigWeave', replacesTitle: false },
       favicon: '/favicon.png',
       customCss: ['./src/styles/theme.css'],
+      components: { Footer: './src/components/LegalFooter.astro' },
       editLink: { baseUrl: 'https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/' },
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/VeiglbergTech/OpenSigWeave' }],
       pagefind: true,
@@ -28,8 +29,6 @@ export default defineConfig({
         { label: 'Technical references', collapsed: true, items: [{ autogenerate: { directory: 'reference' } }] },
       ],
       head: [
-        // Only set an initial preference, preserving the visitor's explicit choice.
-        { tag: 'script', content: "try { if (!localStorage.getItem('starlight-theme')) localStorage.setItem('starlight-theme', 'dark'); } catch {}" },
         { tag: 'meta', attrs: { property: 'og:site_name', content: 'OpenSigWeave Docs' } },
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://docs.opensigweave.de/og.svg' } },
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },

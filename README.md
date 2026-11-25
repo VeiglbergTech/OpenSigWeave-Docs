@@ -1,6 +1,6 @@
 # OpenSigWeave Docs — documentation website
 
-Official source for the static **OpenSigWeave email-signature manager documentation**, built using **Astro + Starlight** and hosted exclusively on **GitHub Pages** after its repository Pages settings and custom domain are enabled.
+Official source for the static **OpenSigWeave email-signature manager documentation**, built using **Astro + Starlight** and hosted exclusively on **GitHub Pages**.
 
 **Prepared release baseline:** [OpenSigWeave 2026.11-alpha](https://github.com/VeiglbergTech/OpenSigWeave/releases/tag/2026.11-alpha), published 25 November 2026. This is an **early-access pre-release**, not a stable or production-certified version.
 
@@ -9,7 +9,7 @@ Official source for the static **OpenSigWeave email-signature manager documentat
 - [Documentation source](src/content/docs/)
 - [Source migration mapping](MIGRATION_MANIFEST.md)
 - [Source review and integrity manifest](source-manifest.json)
-- **Documentation domain:** https://docs.opensigweave.de (GitHub Pages setup required)
+- **Documentation domain:** https://docs.opensigweave.de (live on GitHub Pages)
 
 ## Develop and test locally
 
@@ -26,7 +26,11 @@ npm run test:workflows
 npm run dev
 ```
 
-The build bundles the pinned original OpenSigWeave logo as the website header image and its matching browser favicon (`/favicon.png`) after checking the exact Git blob hash. The website is fully static; there is no server, database, CMS or external application backend.
+The build bundles the pinned original OpenSigWeave logo as the website header image and its matching browser favicon (`/favicon.png`) after checking the exact Git blob hash. The website is fully static; there is no separate application server, database, CMS or external application backend. GitHub Pages still processes technical access data (see privacy notice).
+
+## Legal notices and third-party names
+
+The public website links [Impressum](https://docs.opensigweave.de/impressum/), [Datenschutz](https://docs.opensigweave.de/datenschutz/) and [Markenhinweise](https://docs.opensigweave.de/markenhinweise/) from every page footer. The original owner-approved private-person provider information is public. Product names, including CodeTwo, are used only as factual third-party references; do not imply affiliation, approval, compatibility or superiority without evidence. Before adding analytics, external embeds, fonts or nonessential storage, reassess privacy and ePrivacy requirements.
 
 ## Branch and release safety
 
