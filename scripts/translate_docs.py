@@ -37,10 +37,24 @@ def de_path(path: str) -> str:
 
 link_re = re.compile(r"(!?)\[([^\]\n]+)\]\(([^)]+)\)")
 fragment_re = re.compile(r"(`[^`\n]+`|\*\*[^*\n]+\*\*|(?<!\*)\*[^*\n]+\*(?!\*)|<[^>]+>)")
+_translation = None
+
 def translated(text: str) -> str:
     if not text.strip() or not re.search(r"[A-Za-z]", text):
         return text
-    return argostranslate.translate.translate(text, "en", "de")
+    # Resolve once per worker and reuse across all text fragments. The
+    # convenience function can incur expensive lookup/model setup per call.
+    global _translation
+    if _translation is None:
+        languages = argostranslate.translate.get_installed_languages()
+        en = next((lang for lang in languages if lang.code == "en"), None)
+        de = next((lang for lang in languages if lang.code == "de"), None)
+        if en is None or de is None:
+            raise RuntimeError("Argos English/German model is not installed")
+        _translation = en.get_translation(de)
+        if _translation is None:
+            raise RuntimeError("Argos English-to-German translation pair is missing")
+    return _translation.translate(text)
 
 def inline(text: str) -> str:
     # Keep code, HTML/MDX syntax and link targets byte-for-byte.
