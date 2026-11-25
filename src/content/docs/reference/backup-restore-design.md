@@ -1,11 +1,22 @@
 ---
-title: "Backup and restore details"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+title: "Backup and restore technical design"
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/BACKUP_RESTORE_DESIGN.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Technical/historical reference.** This design or procedure was recorded in the source repository and may describe earlier implementation states. For current deployment and optional-backup behavior use the [installation guide](/installation/docker-compose/) and [update guide](/installation/updates/).
 
 # Backup and disaster recovery design
+
+> **New in-container application-profile backup (dev):** The host-side full
+> image/Compose snapshot and restore described below are retained for legacy
+> archive compatibility. The new Backup Rules create encrypted
+> PostgreSQL/signature/identity-provider archives inside the application, no
+> Docker socket or host operator required. These archives can be recovered
+> safely to a NEW staging directory via `backup_cli.py restore-staging`.
+> A full automated running-instance restore of the new profile has **not**
+> yet been implemented or cross-host validated. Read
+> [BACKUP_RULE_MANAGEMENT.md](/reference/backup-rule-management/) before migration.
+>
 
 **Status:** Versioned archive primitives, age encryption, Docker Compose full-backup creation (including saved container images), encrypted archive verification, fresh-deployment restore, verified retention, guarded scheduled remote-filesystem backups and selective administrator component exports are implemented. Cross-host restore testing, destructive restore and validation against a real NFS/SMB target remain outstanding. A dedicated two-host operator drill is documented in [CROSS_HOST_RESTORE_DRILL.md](/reference/cross-host-restore-drill/); it is a procedure, not evidence that the drill has passed.
 **Scope:** Standalone OpenSigWeave deployment. This design does not configure or modify Mailcow.
@@ -191,4 +202,4 @@ Deployment outline:
 
 The service runs with root privileges because it needs the Docker socket. Its systemd unit uses a read-only system view except for the backup mount and lock directory. Review and adapt the fixed installation paths if the deployment differs. The age identity must remain outside the backup share; compromise of the scheduled host can still expose it, so this is not a substitute for offline key custody.
 
-The Docker end-to-end test now also exercises age-verified retention in both dry-run and deletion modes. A separate CI smoke test stubs mount detection and command execution to verify that an unmounted destination and a mounted local filesystem both fail closed before invoking the backup CLI, while an allowlisted NFS filesystem proceeds through backup creation and verified retention. It also verifies that a symlinked lock file is rejected without changing the link target. The systemd unit allocates a private `/run/opensigweave` runtime directory (mode 0750) for the lock file. The scheduled automation has not yet been exercised against a real NFS/SMB server or a second physical host. CI validates shell syntax and the underlying backup/restore/retention CLI, not remote-storage availability, network interruption recovery or the host's systemd configuration. The full backup, fresh-restore and retention integration coverage is part of the CI workflow. Current branch-specific CI evidence is maintained in [implementation progress](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/IMPLEMENTATION_PROGRESS.md) so this design document does not become stale. This remains same-host CI evidence; a real two-host drill and NFS/SMB host test are still outstanding.
+The Docker end-to-end test now also exercises age-verified retention in both dry-run and deletion modes. A separate CI smoke test stubs mount detection and command execution to verify that an unmounted destination and a mounted local filesystem both fail closed before invoking the backup CLI, while an allowlisted NFS filesystem proceeds through backup creation and verified retention. It also verifies that a symlinked lock file is rejected without changing the link target. The systemd unit allocates a private `/run/opensigweave` runtime directory (mode 0750) for the lock file. The scheduled automation has not yet been exercised against a real NFS/SMB server or a second physical host. CI validates shell syntax and the underlying backup/restore/retention CLI, not remote-storage availability, network interruption recovery or the host's systemd configuration. The full backup, fresh-restore and retention integration coverage is part of the CI workflow. Current branch-specific CI evidence is maintained in [implementation progress](https://github.com/VeiglbergTech/OpenSigWeave/blob/33dc846915adb7d27e7993e162612590c35b962f/docs/IMPLEMENTATION_PROGRESS.md) so this design document does not become stale. This remains same-host CI evidence; a real two-host drill and NFS/SMB host test are still outstanding.

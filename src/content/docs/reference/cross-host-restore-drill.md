@@ -1,9 +1,9 @@
 ---
 title: "Cross-host restore drill"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/CROSS_HOST_RESTORE_DRILL.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Reviewed source snapshot:** Application `main` commit [`33dc846915ad`](https://github.com/VeiglbergTech/OpenSigWeave/commit/33dc846915adb7d27e7993e162612590c35b962f), 25 November 2026. [Release and known limits](/releases/release-notes/).
 
 # Cross-host disaster-recovery drill
 

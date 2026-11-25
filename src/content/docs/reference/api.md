@@ -1,9 +1,9 @@
 ---
-title: "API reference"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+title: "Complete API reference"
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/API.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Reviewed source snapshot:** Application `main` commit [`33dc846915ad`](https://github.com/VeiglbergTech/OpenSigWeave/commit/33dc846915adb7d27e7993e162612590c35b962f), 25 November 2026. [Release and known limits](/releases/release-notes/).
 
 # OpenSigWeave management and engine API
 
@@ -139,7 +139,7 @@ Version files are immutable and integrity-checked when read. Restoring an old ve
 - `POST /api/admin/signature-assets`: administrator-only, CSRF-protected image upload (a valid machine management key may also authenticate). PNG, JPEG and WebP are supported; GIF is supported for compatibility. Maximum file size: 2 MiB. The response contains an immutable `/signature-assets/<sha256>.<ext>` URL.
 - `GET /signature-assets/{asset_name}`: publicly readable immutable image, required so external mail recipients can load images without a browser session. Configure the reverse proxy to permit anonymous GET for only this path while keeping upload and other administrator endpoints protected.
 
-The editor stores absolute HTTPS asset URLs in signature HTML; temporary `blob:` and embedded `data:` images are not a reliable delivery format. Assets reside in the persistent signature volume and are shared by older versions. Deleting an HTML image reference does not purge a shared image. See [README image deployment requirements](/getting-started/overview/).
+The editor stores absolute HTTPS asset URLs in signature HTML; temporary `blob:` and embedded `data:` images are not a reliable delivery format. Assets reside in the persistent signature volume and are shared by older versions. Deleting an HTML image reference does not purge a shared image. See [README image deployment requirements](https://github.com/VeiglbergTech/OpenSigWeave/blob/33dc846915adb7d27e7993e162612590c35b962f/README.md#signature-images-and-publicly-accessible-asset-urls).
 
 ## Signature rules
 
@@ -154,11 +154,13 @@ Rules are evaluated in descending priority order, with a stable ID tie-breaker. 
 
 Supported condition kinds:
 
-- `sender_equals`
-- `domain_equals`
+- `sender_equals` / `sender_not_equals`
+- `domain_equals` / `domain_not_equals`
 - `group_contains`
-- `claim_equals`
-- `attribute_equals`
+- `claim_equals` / `claim_not_equals`
+- `attribute_equals` / `attribute_not_equals`
+
+Comparisons are case-insensitive. Negative attribute/claim comparisons match only when a value is present and **none** of its values equal the expected value (including multi-valued attributes). Missing or entirely empty attributes/claims do not match negative comparisons. Existing positive comparisons and rule priority/AND semantics are unchanged.
 
 `claim_equals` currently evaluates selected Authentik user fields (`username`, `email`, `name`, `is_active`, `uid`, `path`, `type`). `attribute_equals` evaluates custom Authentik attributes. Rule actions are `SIGNATURE`, `GROUP` or `NONE`. `SIGNATURE` requires a signature target, `GROUP` requires a group target, and `NONE` deliberately suppresses injection.
 

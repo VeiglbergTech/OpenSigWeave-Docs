@@ -1,9 +1,9 @@
 ---
 title: "Postfix Milter design"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/POSTFIX_MILTER_DESIGN.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Technical/historical reference.** This design or procedure was recorded in the source repository and may describe earlier implementation states. For current deployment and optional-backup behavior use the [installation guide](/installation/docker-compose/) and [update guide](/installation/updates/).
 
 # Postfix Milter adapter — technical design
 

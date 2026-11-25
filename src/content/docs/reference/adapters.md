@@ -1,9 +1,9 @@
 ---
-title: "Adapter architecture"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+title: "Mail-server adapter reference"
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/ADAPTERS.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Reviewed source snapshot:** Application `main` commit [`33dc846915ad`](https://github.com/VeiglbergTech/OpenSigWeave/commit/33dc846915adb7d27e7993e162612590c35b962f), 25 November 2026. [Release and known limits](/releases/release-notes/).
 
 # OpenSigWeave adapter architecture
 
@@ -47,6 +47,13 @@ The endpoint returns `Cache-Control: no-store, private` and JSON:
   "strip_device_signatures": false
 }
 ```
+
+For CID delivery, request `X-OpenSigWeave-Inline-Images: cid`. The JSON response adds
+`inline_assets`: locally stored, content-addressed images with their validated
+base64 bytes, MIME type and `Content-ID`. The adapter validates the fields
+again, checks duplicates, wraps the modified HTML MIME body as
+`multipart/related`, and never downloads image URLs during message processing.
+A plain-text-only message receives no orphan image attachments.
 
 An empty `html` means do not inject a signature. HTTP 401 means adapter credentials are invalid; 400 means malformed sender input; 422 means a stored template cannot be rendered; 503 means required signature assets are unavailable. Adapters must not interpret API errors as an empty signature: they must apply their explicitly configured fail-open/fail-closed policy and emit an operational log/metric.
 

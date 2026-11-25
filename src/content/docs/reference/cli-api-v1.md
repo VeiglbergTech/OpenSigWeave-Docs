@@ -1,9 +1,9 @@
 ---
-title: "CLI and API scope"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+title: "Operator CLI interface"
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/CLI_API_V1.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Reviewed source snapshot:** Application `main` commit [`33dc846915ad`](https://github.com/VeiglbergTech/OpenSigWeave/commit/33dc846915adb7d27e7993e162612590c35b962f), 25 November 2026. [Release and known limits](/releases/release-notes/).
 
 # CLI / REST / Web feature decisions for v1.0
 
@@ -52,4 +52,4 @@ This assessment reflects the implementation on `dev`. The objective is *automati
 
 Missing dedicated CLI commands for domains, signatures, groups, rules, schedules, branding and provider configuration are **intentional**. They already have API operations and adding CLI copies would not add meaningful capability. Use standard HTTP automation clients and service-specific secrets. Fine-grained management API scopes, token issuance/rotation UI, an OpenAPI public schema and any broad CLI wrapper are *out of scope for v1.0*; consider them only if concrete automation needs justify the additional maintenance and security surface.
 
-See [API reference](/reference/api/), [backup/restore design](/reference/backup-restore-design/) and the [README](/getting-started/overview/).
+See [API reference](/reference/api/), [backup/restore design](/reference/backup-restore-design/) and the [README](https://github.com/VeiglbergTech/OpenSigWeave/blob/33dc846915adb7d27e7993e162612590c35b962f/README.md).

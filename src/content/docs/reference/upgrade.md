@@ -1,21 +1,23 @@
 ---
-title: "Upgrade and recovery"
-description: Reviewed source documentation from the OpenSigWeave development branch.
+title: "Upgrade technical reference"
+description: "Source-aligned reference from the first OpenSigWeave alpha release"
 ---
 
-> **Source:** [OpenSigWeave development documentation](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/UPGRADE.md). This technical reference describes the November 2026 release candidate, not a production certification.
+> **Technical/historical reference.** This design or procedure was recorded in the source repository and may describe earlier implementation states. For current deployment and optional-backup behavior use the [installation guide](/installation/docker-compose/) and [update guide](/installation/updates/).
 
-# Upgrade and recovery guide (v2026.11 / v1.0 candidate)
+# Upgrade and recovery guide (2026.11-alpha early access)
 
-**Status:** Candidate procedure, not a production acceptance certificate. Supported documented deployment path: standalone Docker Compose stack on `beta`. Never upgrade directly from `dev` or make changes in `main` as part of the candidate audit. Keep Mailcow/Rspamd integration disabled in production until the [adapter acceptance matrix](/reference/mailcow-rspamd-integration/) has passed.
+> **Deployment automation:** The new `./install.sh`, `./generate_config.sh` and `./update.sh` workflows are described in [INSTALL_UPDATE.md](/reference/install-update/) and in [OpenSigWeave-Docs](https://github.com/VeiglbergTech/OpenSigWeave-Docs/tree/dev/src/content/docs/installation). This older candidate checklist remains for manual verification and recovery.
+
+**Status:** Candidate procedure, not a production acceptance certificate. Published release deployment path: standalone Docker Compose stack on manually approved `main`, with prebuilt GHCR application image. Unreleased `beta` remains the staging checkout. Do not promote into main during the candidate audit. Keep Mailcow/Rspamd integration disabled in production until the [adapter acceptance matrix](/reference/mailcow-rspamd-integration/) has passed.
 
 ## 1. Preflight and backup
 
 1. Record the current Git commit (`git rev-parse HEAD`), Docker image ID (`docker image inspect`), deployment host, external URL and expected DNS/reverse-proxy routing. Record the running Mailcow/Rspamd version separately if that adapter is enabled.
-2. Confirm free space for database, signature assets, image snapshots and the encrypted archive. Have the offline age private identity and a separate backup destination available.
+2. Confirm free space for database and persistent files. Backups are optional for the updater; if a rule is enabled, its encrypted archive and offline recovery identity must be usable. For production deployments, independently verified recovery backups are strongly recommended.
 3. Use `docker compose ps`, `docker compose logs --tail=100 opensigweave`, and the administrator **System** tab to check health and DB/storage status. Confirm an emergency local administrator can log in.
 4. Check `.env` permissions (`chmod 600 .env`), `APP_ALLOWED_HOSTS`, independent `POSTGRES_PASSWORD`, `SECRET_KEY`, `ENGINE_API_KEY`, and the optional distinct `MANAGEMENT_API_KEY`. Provider credentials should be stored in the managed identity-provider volume, not committed to Git.
-5. Create an **encrypted full backup** and verify it *before* changing code. A selective ZIP export from the browser is not disaster recovery. Backups contain secrets and must not be uploaded to GitHub.
+5. Prefer a tested **encrypted full backup** before production changes. `./update.sh` nevertheless permits installations with no configured Backup Rule. When a configured backup fails, it pauses for an explicit decision; `--yes` does not bypass failure.
 
 ```bash
 cd /opt/opensigweave
@@ -31,6 +33,13 @@ python3 backup_cli.py verify /backup/opensigweave-pre-v2026.11.age \
 ```
 
 The example recipient above is intentionally a **placeholder**, not a working encryption key. Create and safely store your own age key pair. The backup CLI requires Docker and `age` installed on the operator host. Read [backup/restore design](/reference/backup-restore-design/), including consistency restrictions and retention.
+
+**Preferred automatic path:** `./update.sh --check`, `--prefetch`,
+`--dry-run`, then `./update.sh` (with `--approve-breaking` only after
+review). Its backup decision and journal behavior are described in
+[INSTALL_UPDATE.md](/reference/install-update/). The manual `backup_cli.py create`
+command below is a separate legacy full-archive workflow, not a prerequisite
+for installing or running updates.
 
 ## 2. Breaking changes and data migration
 
@@ -51,17 +60,19 @@ After `beta` has received a completely green, approved commit, stop outbound sig
 ```bash
 cd /opt/opensigweave
 git status --short
-git fetch origin beta
-git checkout beta
-git pull --ff-only origin beta
-docker compose config --quiet
-docker compose up -d --build --wait --wait-timeout 180
+git fetch origin main
+git checkout main
+git pull --ff-only origin main
+./update.sh --check
+./update.sh --prefetch
+./update.sh --dry-run
+./update.sh
 docker compose ps
 docker compose logs --tail=100 opensigweave
 docker compose exec -T opensigweave alembic current
 ```
 
-Abort if the checkout is dirty or diverged, the backup is unverified, Compose validation fails, the healthcheck fails or migrations error. **Never** use `docker compose down --volumes` for an in-place upgrade.
+Abort if the checkout is dirty or diverged, an enabled backup fails without explicit override, Compose validation fails, the healthcheck fails or migrations error. **Never** use `docker compose down --volumes` for an in-place upgrade.
 
 ## 4. Post-upgrade checks
 
@@ -77,4 +88,4 @@ Only enable the staged Mailcow/Rspamd, Postfix or Stalwart adapter after its doc
 4. Keep the original deployment untouched for investigation. Restore instructions and a two-host drill are in [CROSS_HOST_RESTORE_DRILL.md](/reference/cross-host-restore-drill/). A same-host CI restore is not cross-host evidence.
 5. Roll back a disposable Mailcow adapter independently using the removal/configuration procedure in [MAILCOW_RSPAMD_INTEGRATION.md](/reference/mailcow-rspamd-integration/), then recheck normal mail delivery and DKIM.
 
-Do not promote to `main`, create a tag or publish a GitHub Release until a maintainer has reviewed the [manual acceptance record](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/docs/RELEASE_ACCEPTANCE_v2026.11.md) and explicitly authorized it.
+Do not promote to `main` or create a version tag until a maintainer has reviewed the [manual acceptance record](/reference/release-acceptance-v202611/) and explicitly authorized it. The [GHCR workflow](/reference/release-process/) builds a precompiled image on an existing self-hosted runner after approval; published hosts pull the package and do not build it.
