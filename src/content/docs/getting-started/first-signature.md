@@ -8,8 +8,8 @@ description: "Basic template, domain assignment and a safe first test."
 3. Under **Signatures**, create a signature, choose the appropriate domain scope and edit the HTML in CKEditor.
 4. Save, reopen and inspect the preview. Creating a signature records its initial version; later edits record new versions.
 5. Configure a **Rule** or domain default that can select the signature.
-6. Send a **staging** email through the configured adapter and check both HTML and plain-text alternatives before using the configuration with live recipients.
+6. Previewing a signature or group must not alter live rotation history. Send a **staging** email through the configured adapter and check both HTML and plain-text alternatives before using the configuration with live recipients.
 
-Image uploads should be reachable by recipients over HTTPS using the public \`/signature-assets/\` route. Uploads require an administrator session; image retrieval does not.
+Image uploads should be reachable by recipients over HTTPS using the public `/signature-assets/` route. Uploads require an administrator session; image retrieval does not.
 
 See [signatures](/administration/signatures/), [rules](/administration/rules/) and [Rspamd integration](/installation/rspamd/).

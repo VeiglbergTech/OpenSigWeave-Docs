@@ -7,4 +7,4 @@ Open a GitHub issue or pull request against the relevant repository. Implement a
 
 Keep the code behavior and documentation synchronized, describe verified behavior separately from planned work, and avoid including passwords, tokens, internal IPs or private audit materials.
 
-All changes must follow \`dev → beta → main\` with test and manual-release gates. Consult the [application repository contribution guidance](https://github.com/VeiglbergTech/OpenSigWeave/tree/dev).
+Application changes follow `dev → beta → main` with tests and manual release authorization. Documentation uses the same three-branch gate, but its website has **not** been approved for publication. Consult the [application repository contribution guidance](https://github.com/VeiglbergTech/OpenSigWeave/tree/dev).

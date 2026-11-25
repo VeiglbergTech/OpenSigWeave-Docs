@@ -7,7 +7,7 @@ description: "Rspamd, experimental Postfix and Stalwart integration"
 
 | Adapter | Status |
 | --- | --- |
-| Rspamd (Mailcow path) | Implemented with MIME/contract tests; **live SMTP/DKIM acceptance pending** |
+| Rspamd (Mailcow path) | Implemented; selected isolated Mailcow/SOGo and local DKIM tests passed, but broader live SMTP/DKIM production acceptance is pending |
 | Postfix Milter | Experimental implementation with protocol and disposable-Postfix tests; live deployment acceptance pending |
 | Stalwart MTA-hook | Experimental implementation with MIME safety tests; live delivery acceptance pending |
 | Exim, Haraka, OpenSMTPD, Exchange, native Mailcow integration | Proposed possibilities, **not implemented production adapters** |
