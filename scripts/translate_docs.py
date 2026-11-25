@@ -21,13 +21,27 @@ MANUAL = {
     "impressum.md", "datenschutz.md", "markenhinweise.md",
     "developers/content-authoring.mdx",
 }
-VERSION = "2"
+VERSION = "3"
+
+def route_for_file(relative: str | Path) -> str:
+    """Match Starlight's default ASCII slugging for the current doc filenames.
+
+    Starlight turns release-notes-v2026.11.md into /release-notes-v202611/.
+    Do not infer a public URL by merely removing the Markdown extension.
+    """
+    route = Path(relative).with_suffix("").as_posix().lower()
+    route = "/".join(part.replace(".", "") for part in route.split("/"))
+    if route == "index":
+        return "/"
+    if route.endswith("/index"):
+        route = route[:-6]
+    return "/" + route.strip("/") + "/"
+
 routes = set()
 for src in DOCS.rglob("*"):
     if not src.is_file() or src.suffix not in (".md", ".mdx") or "de" == src.relative_to(DOCS).parts[0]:
         continue
-    rel = src.relative_to(DOCS)
-    routes.add("/" + rel.with_suffix("").as_posix().replace("index", "").rstrip("/") + "/")
+    routes.add(route_for_file(src.relative_to(DOCS)))
 routes.add("/")
 
 def de_path(path: str) -> str:
@@ -133,7 +147,7 @@ def translate_markdown(content: str) -> str:
 
 def generate_one(rel: str, original: str) -> str:
     """Work on one source file in a separate process with its own Argos model."""
-    url = "/" + Path(rel).with_suffix("").as_posix().replace("index", "").rstrip("/") + "/"
+    url = route_for_file(rel)
     result = translate_markdown(original).replace("{url}", url)
     source_edit = "https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/src/content/docs/" + rel
     result = result.replace("---\n", "---\neditUrl: " + json.dumps(source_edit) + "\n", 1)
