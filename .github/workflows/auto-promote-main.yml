@@ -1,9 +1,7 @@
 name: Auto-promote verified documentation dev to main
 
 on:
-  workflow_run:
-    workflows: [Documentation CI]
-    types: [completed]
+  push:
     branches: [dev]
   workflow_dispatch:
 
@@ -22,12 +20,8 @@ jobs:
     name: Verify exact dev CI and fast-forward main
     if: >-
       github.repository == 'VeiglbergTech/OpenSigWeave-Docs' &&
-      (github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'dev' &&
-      github.event.workflow_run.head_repository.full_name == github.repository &&
-      github.event.workflow_run.path == '.github/workflows/docs-ci.yml'))
+      github.ref == 'refs/heads/dev' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -48,7 +42,7 @@ jobs:
         if: steps.credentials.outputs.enabled == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Verify both successful push CI workflows for the exact commit
         if: steps.credentials.outputs.enabled == 'true'
@@ -57,7 +51,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          SOURCE_SHA: ${{ github.sha }}
         run: python3 scripts/auto_promote_main.py gate
       - name: Obtain repository-scoped GitHub App token
         if: steps.gate.outputs.ready == 'true'
@@ -76,5 +70,5 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           GH_REPO: ${{ github.repository }}
-          SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          SOURCE_SHA: ${{ github.sha }}
         run: python3 scripts/auto_promote_main.py promote

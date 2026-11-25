@@ -25,7 +25,7 @@ for(const name of ['docs-ci.yml','docs-security.yml']){
 }
 if(!contents['promotion-policy.yml']?.includes('main:dev'))failures.push('Missing dev-to-main PR policy');
 const auto=contents['auto-promote-main.yml']||'';
-if(!auto.includes('workflow_run:')||!auto.includes('workflows: [Documentation CI]'))failures.push('Automatic promotion must trigger after documentation CI');
+if(!auto.includes('push:')||!auto.includes('branches: [dev]'))failures.push('Automatic promotion must trigger on dev pushes and verify exact CI itself');
 if(!auto.includes('docs-security.yml') && !fs.readFileSync('scripts/auto_promote_main.py','utf8').includes('docs-security.yml'))failures.push('Automatic promotion missing security CI verification');
 if(!auto.includes('permission-contents: write')||!auto.includes('create-github-app-token@'))failures.push('Automatic promotion must use a scoped GitHub App token');
 if(!auto.includes('workflow_dispatch:'))failures.push('Promotion must permit controlled retry after credentials are configured');

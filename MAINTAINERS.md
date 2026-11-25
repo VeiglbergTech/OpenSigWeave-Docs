@@ -6,10 +6,10 @@ The **only active documentation branches are `dev` and `main`**. The application
 
 - All documentation edits are committed to `dev`.
 - On every `dev` push, **Documentation CI** builds Starlight and checks Markdown, links, browser rendering, workflow policy and the exact reviewed application source baseline; **Documentation Security CI** audits dependencies, scanned content and history.
-- The `auto-promote-main.yml` GitHub Actions workflow receives a completed successful Documentation CI `push` event (or an explicit maintainer retry). It separately verifies that **both** source push CI runs completed successfully for the **exact same current `dev` SHA**. Failed, cancelled, missing or pending checks never count as passing.
+- The `auto-promote-main.yml` GitHub Actions workflow starts on every `dev` push (or an explicit maintainer retry after initial setup). It waits for and verifies that **both** source push CI runs completed successfully for the **exact same current `dev` SHA**. Failed, cancelled, missing or pending checks never count as passing.
 - Using the repository-scoped GitHub App installation token, it fast-forwards `main` to that exact SHA. There is no merge/rebase/squash commit and no force push. If `main` has diverged, the workflow fails closed; resolve the divergence explicitly.
 - A GitHub App-authored `main` push triggers `pages.yml` and deploys to GitHub Pages **only if Pages has been configured**.
-- When App credentials are absent, the promotion workflow records a notice and safely skips promotion. It can be retried with **Actions → Auto-promote verified documentation dev to main → Run workflow (dev)** after setup. The existing, retired `beta` ref is not used by any automation.
+- When App credentials are absent, the promotion workflow records a notice and safely skips promotion. Before the first promotion, a new `dev` push triggers the promotion workflow; once the workflow also exists on the default branch, it can be retried with **Actions → Auto-promote verified documentation dev to main → Run workflow (dev)**. The existing, retired `beta` ref is not used by any automation.
 
 ## Reuse the existing OpenSigWeave GitHub App
 
@@ -18,7 +18,7 @@ The **only active documentation branches are `dev` and `main`**. The application
 1. Go to GitHub **Settings → Applications → Installed GitHub Apps** (or the organization's GitHub App installations). In the existing App installation, select **OpenSigWeave-Docs** as an authorized repository if its access is limited to selected repositories. Keep **Contents: Read and write** and **Actions: Read**.
 2. In **VeiglbergTech/OpenSigWeave-Docs → Settings → Secrets and variables → Actions**, configure the *existing* values as repository secrets **`CI_PROMOTION_APP_ID`** and **`CI_PROMOTION_APP_PRIVATE_KEY`**. If these names already exist as permitted organization secrets exposed to this repository, do not duplicate them. Do not paste or commit private keys to the repository.
 3. Verify the App has permission to update `main`. If GitHub branch protections or rulesets require bypass, explicitly allow **only this installed GitHub App**, not all actors. Protection settings cannot be enforced just by committing workflow files.
-4. Trigger the promotion workflow on `dev` once to promote the last already-verified commit if no new push occurs; thereafter it runs automatically. The workflow uses public-repository standard GitHub-hosted runners; it does not require paid runners or other infrastructure.
+4. After supplying the secrets, push a new commit to `dev` to bootstrap the first promotion if the workflow has not yet been copied to default-branch `main`; thereafter it runs automatically. Manual `workflow_dispatch` is also supported after initial promotion. The workflow uses public-repository standard GitHub-hosted runners; it does not require paid runners or other infrastructure.
 
 GitHub's default `GITHUB_TOKEN` is intentionally read-only in the promotion workflow. A push performed with that token would not trigger the downstream Pages push workflow. The GitHub App token ensures the approved `main` push triggers normal CI and Pages.
 
