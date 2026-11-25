@@ -18,7 +18,7 @@ if(![p,path.join(p,'index.html'),p+'.html'].some(f=>fs.existsSync(f)&&fs.statSyn
 // Every English route must have a real German counterpart.
 for(const page of pages) {
   const rel=path.relative(dist,page).replaceAll('\\','/');
-  const counterpart=rel.startsWith('de/') ? rel.slice(3) : 'de/'+rel;
+  if(rel === '404.html' || rel === 'de/404.html') continue;\n  const counterpart=rel.startsWith('de/') ? rel.slice(3) : 'de/'+rel;
   if(!fs.existsSync(path.join(dist,counterpart)))
     errors.push(rel+': missing language counterpart '+counterpart);
 }

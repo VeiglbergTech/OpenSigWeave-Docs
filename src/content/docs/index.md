@@ -30,4 +30,4 @@ Mailcow, Postfix or another email system still manages authenticated senders, ma
 
 This documentation is reviewed against [application main commit `33dc846915ad`](https://github.com/VeiglbergTech/OpenSigWeave/commit/33dc846915adb7d27e7993e162612590c35b962f). The published image was built from the earlier release commit [`29f43e9c5df7`](https://github.com/VeiglbergTech/OpenSigWeave/commit/29f43e9c5df70fa09576422b86f55c2e4d5c9e3c). Later documentation-only commits on `main` do not automatically produce a matching image. Consult the [source/image parity warning](/installation/docker-compose/) before deployment.
 
-The documentation website is being prepared on its separate `dev` branch; appearance here does not mean GitHub Pages has been published.
+This documentation site is hosted on GitHub Pages. Changes are prepared on `dev` and published only after successful verification and promotion to `main`. Use the built-in language selector for the German translation of every page.

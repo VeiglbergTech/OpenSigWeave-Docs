@@ -33,6 +33,6 @@ Maßgeblich für die Nutzung und Weitergabe des jeweiligen Quellcodes sind die *
 - Technische Hinweise zu Drittprodukten sind keine verbindlichen Herstellerangaben. Für eine Konfiguration sollten die aktuellen Originalunterlagen des jeweiligen Herstellers geprüft werden.
 - Bei Hinweisen auf unzutreffende Quellen, Namensverwendungen oder Rechtefragen wenden Sie sich an [info@veiglbergtech.com](mailto:info@veiglbergtech.com).
 
-Weitere Angaben: [Impressum](/impressum/) und [Datenschutz](/datenschutz/).
+Weitere Angaben: [Impressum](/de/impressum/) und [Datenschutz](/de/datenschutz/).
 
 **Stand:** 25. November 2026

@@ -6,7 +6,7 @@
 
 ## Scope and status
 
-- Astro/Starlight source is on documentation branch `dev`; GitHub Pages publishing depends on the repository Pages settings and DNS; successful CI and the configured GitHub App will automatically promote the exact verified `dev` SHA to `main`.
+- Astro/Starlight source is prepared on `dev` and published through GitHub Pages after successful CI and GitHub App fast-forward promotion to `main`. The published documentation domain is `docs.opensigweave.de`. English and German pages are generated as statically paired routes.
 - Public installation, administration, operations, developer and release pages have been updated for the first alpha.
 - The **27** mapped technical documents below are copied from the application repository's reviewed `main` snapshot with clear source/historical-reference banners and appropriate hyperlinks.
 - Older technical references can describe historical constraints. Current install/update/release pages take precedence for public user guidance.

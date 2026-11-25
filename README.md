@@ -11,9 +11,25 @@ Official source for the static **OpenSigWeave email-signature manager documentat
 - [Source review and integrity manifest](source-manifest.json)
 - **Documentation domain:** https://docs.opensigweave.de (live on GitHub Pages)
 
+## Deutsch und Englisch — vollständig statisch
+
+Die Website verwendet die eingebaute Sprachauswahl von Starlight: **Englisch** unter `/` und **Deutsch** unter `/de/`, mit identischen Seitenpfaden und eigener Suchindizierung je Sprache. Jede englische Seite muss im statischen Build einen deutschen Gegenpart haben. Die CI prüft die Vollständigkeit sowie die internen Links und lokalisierten Rechtshinweise.
+
+Englische Inhalte unter `src/content/docs/` sind die editierbaren Quellen. Der kostenlose quelloffene Offline-Übersetzer **Argos Translate** erzeugt die deutschen Markdown-Dateien während des Builds; auf der veröffentlichten Website läuft kein Übersetzungsdienst und es werden keine Dokumentationsinhalte beim Seitenaufruf an Drittanbieter übertragen. Technische Befehle und Codeblöcke bleiben unverändert. Automatische Übersetzungen können sprachlich oder fachlich ungenau sein: Sicherheitskritische Schritte anhand des englischen Originals prüfen. Die deutschen Rechtstexte sowie die komplexe MDX-Beispielseite sind separat redaktionell gepflegt.
+
+Für lokale Builds die Übersetzungsumgebung vorbereiten:
+
+```bash
+python3 -m venv .translate-env
+.translate-env/bin/python -m pip install argostranslate==1.11.0
+.translate-env/bin/python scripts/setup_translation.py
+```
+
+Anschließend werden bei `npm run build`, `npm run check`, `npm run test:docs` und `npm run dev` fehlende oder veränderte deutsche Seiten automatisch erzeugt. Die generierten `de/`-Dateien sind keine zusätzlichen Git-Quellen. Versionierte manuelle Übersetzungen bleiben unberührt.
+
 ## Develop and test locally
 
-Requires Node.js 22.12 or newer.
+Requires Node.js 22.12 or newer, Python 3 and the free Argos model prepared above.
 
 ```bash
 npm ci --no-fund --no-audit

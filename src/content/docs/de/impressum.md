@@ -22,8 +22,8 @@ Inhaltlich verantwortlich und Ansprechpartner für diese Website ist Martin Leon
 
 ## Fremde Marken, Produktnamen und Quellen
 
-Namen wie CodeTwo, Microsoft Outlook, mailcow, Rspamd, Authentik oder GitHub werden, soweit sie in der Dokumentation vorkommen, ausschließlich zur sachlichen Beschreibung oder Identifizierung der jeweiligen Drittprodukte verwendet. Daraus folgt **keine** Partnerschaft, Zertifizierung, Unterstützung oder Empfehlung durch die jeweiligen Rechteinhaber. Details und Projekt-Credits stehen in den [Marken- und Projekthinweisen](/markenhinweise/).
+Namen wie CodeTwo, Microsoft Outlook, mailcow, Rspamd, Authentik oder GitHub werden, soweit sie in der Dokumentation vorkommen, ausschließlich zur sachlichen Beschreibung oder Identifizierung der jeweiligen Drittprodukte verwendet. Daraus folgt **keine** Partnerschaft, Zertifizierung, Unterstützung oder Empfehlung durch die jeweiligen Rechteinhaber. Details und Projekt-Credits stehen in den [Marken- und Projekthinweisen](/de/markenhinweise/).
 
-Unsere [Datenschutzerklärung](/datenschutz/) erläutert die Datenverarbeitung beim Besuch dieser Website.
+Unsere [Datenschutzerklärung](/de/datenschutz/) erläutert die Datenverarbeitung beim Besuch dieser Website.
 
 **Stand:** 25. November 2026
