@@ -62,7 +62,7 @@ def ci_states(sha: str) -> dict[str, str]:
 
 
 def verified(sha: str, wait: bool) -> bool:
-    attempts = 36 if wait else 1
+    attempts = 120 if wait else 1
     for attempt in range(attempts):
         if branch_sha("dev") != sha:
             print("dev advanced; skipping stale promotion.")

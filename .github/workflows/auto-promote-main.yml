@@ -23,7 +23,7 @@ jobs:
       github.ref == 'refs/heads/dev' &&
       (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Check whether existing GitHub App credentials are available
         id: credentials

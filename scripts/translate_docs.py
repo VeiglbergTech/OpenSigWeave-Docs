@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import argostranslate.translate
 
@@ -116,6 +117,15 @@ def translate_markdown(content: str) -> str:
     warning = "> **Hinweis:** Diese Übersetzung wurde automatisiert erstellt. Für sicherheitskritische Befehle und technische Details gilt die [englische Originalfassung]({url}).\n\n"
     return "---\n" + "\n".join(newfm) + "\n---\n\n" + warning + "".join(result).lstrip("\n")
 
+def generate_one(rel: str, original: str) -> str:
+    """Work on one source file in a separate process with its own Argos model."""
+    url = "/" + Path(rel).with_suffix("").as_posix().replace("index", "").rstrip("/") + "/"
+    result = translate_markdown(original).replace("{url}", url)
+    source_edit = "https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/src/content/docs/" + rel
+    result = result.replace("---\n", "---\neditUrl: " + json.dumps(source_edit) + "\n", 1)
+    result = result.replace("\n---\n\n> **Hinweis:**", "\n---\n\n<!-- MACHINE-TRANSLATED -->\n\n> **Hinweis:**", 1)
+    return result
+
 def main():
     cache = {}
     if CACHE.exists():
@@ -123,45 +133,51 @@ def main():
             cache = json.loads(CACHE.read_text(encoding="utf-8"))
         except ValueError:
             pass
-    updated, skipped = 0, 0
     source_files = sorted(src for src in DOCS.rglob("*") if src.is_file() and src.suffix in (".md", ".mdx") and src.relative_to(DOCS).parts[0] != "de")
+    tasks = []
+    skipped = 0
     for src in source_files:
-        rel = src.relative_to(DOCS)
+        rel = src.relative_to(DOCS).as_posix()
         dest = DOCS / "de" / rel
-        if rel.as_posix() in MANUAL:
+        if rel in MANUAL:
             if not dest.exists():
-                raise RuntimeError(f"Human-maintained translation missing: {dest}")
+                raise RuntimeError(f"Missing manually maintained German page: {dest}")
+            skipped += 1
             continue
         if src.suffix == ".mdx":
             raise RuntimeError(f"MDX translation needs a reviewed manual counterpart: {rel}")
         original = src.read_text(encoding="utf-8")
         digest = hashlib.sha256((VERSION + original).encode("utf-8")).hexdigest()
-        key = rel.as_posix()
-        if dest.is_file() and cache.get(key) == digest:
+        if dest.is_file() and cache.get(rel) == digest:
             skipped += 1
             continue
-        # Do not accidentally overwrite a hand-edited German translation.
         if dest.exists() and "<!-- MACHINE-TRANSLATED -->" not in dest.read_text(encoding="utf-8"):
             skipped += 1
             continue
-        url = "/" + rel.with_suffix("").as_posix().replace("index", "").rstrip("/") + "/"
-        translated_file = translate_markdown(original).replace("{url}", url)
-        # These localized Markdown files exist only during the build.
-        # Link readers to the maintained English source instead of a 404 on GitHub.
-        source_edit = "https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/src/content/docs/" + rel.as_posix()
-        translated_file = translated_file.replace("---\n", "---\neditUrl: " + json.dumps(source_edit) + "\n", 1)
-        translated_file = translated_file.replace("\n---\n\n> **Hinweis:**", "\n---\n\n<!-- MACHINE-TRANSLATED -->\n\n> **Hinweis:**", 1)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(translated_file, encoding="utf-8")
-        cache[key] = digest
-        updated += 1
+        tasks.append((rel, original, digest))
+
+    # CPU inference is heavy for complete technical references. Work on
+    # independent pages concurrently; workers never modify source files.
+    if tasks:
+        with ProcessPoolExecutor(max_workers=min(4, len(tasks))) as pool:
+            futures = {
+                pool.submit(generate_one, rel, original): (rel, digest)
+                for rel, original, digest in tasks
+            }
+            for future in as_completed(futures):
+                rel, digest = futures[future]
+                text = future.result()
+                dest = DOCS / "de" / rel
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                dest.write_text(text, encoding="utf-8")
+                cache[rel] = digest
+
     CACHE.parent.mkdir(parents=True, exist_ok=True)
     CACHE.write_text(json.dumps(cache, indent=2) + "\n", encoding="utf-8")
-    # Strict completeness: no English route is allowed to lack a German file.
     missing = [str(src.relative_to(DOCS)) for src in source_files if not (DOCS / "de" / src.relative_to(DOCS)).is_file()]
     if missing:
         raise RuntimeError("Missing German translations: " + ", ".join(missing))
-    print(f"German static docs complete: {len(source_files)} pairs ({updated} created/updated, {skipped} cached/manual).")
+    print(f"German static docs complete: {len(source_files)} pairs ({len(tasks)} created/updated, {skipped} cached/manual).")
 
 if __name__ == "__main__":
     main()
