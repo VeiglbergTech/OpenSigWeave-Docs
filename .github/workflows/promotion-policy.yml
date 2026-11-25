@@ -2,7 +2,7 @@ name: Documentation branch promotion policy
 
 on:
   pull_request:
-    branches: [beta, main]
+    branches: [main]
     types: [opened, synchronize, reopened, ready_for_review, edited]
 
 permissions:
@@ -14,7 +14,7 @@ jobs:
     name: docs-promotion-policy
     runs-on: ubuntu-latest
     steps:
-      - name: Enforce dev -> beta -> main and successful source checks
+      - name: Enforce dev -> main and successful source checks
         shell: bash
         env:
           SOURCE_BRANCH: ${{ github.head_ref }}
@@ -27,8 +27,8 @@ jobs:
           set -euo pipefail
           [[ "$SOURCE_REPOSITORY" == "$GH_REPO" ]] || { echo "::error::Cross-repository promotion is forbidden"; exit 1; }
           case "$TARGET_BRANCH:$SOURCE_BRANCH" in
-            beta:dev|main:beta) ;;
-            *) echo "::error::Only dev -> beta or beta -> main permitted"; exit 1 ;;
+            main:dev) ;;
+            *) echo "::error::Only dev -> main permitted"; exit 1 ;;
           esac
           latest="$(gh api "repos/$GH_REPO/branches/$SOURCE_BRANCH" --jq '.commit.sha')"
           [[ "$latest" == "$SOURCE_SHA" ]] || { echo "::error::Source branch moved"; exit 1; }
@@ -64,4 +64,4 @@ jobs:
             fi
             sleep 5
           done
-          echo "CI source gate verified; human review and beta acceptance remain required by GitHub rulesets."
+          echo "CI source gate verified; main branch protection, if configured, still applies."

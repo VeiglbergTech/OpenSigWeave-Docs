@@ -20,9 +20,16 @@ if(!pages.includes("github.ref == 'refs/heads/main'"))failures.push('Pages runti
 if(!pages.includes('actions/deploy-pages@'))failures.push('Official Pages deployment action missing');
 for(const name of ['docs-ci.yml','docs-security.yml']){
  const y=contents[name]||'';
- if(!y.includes('branches: [dev, beta, main]'))failures.push(name+' must test all branches');
+ if(!y.includes('branches: [dev, main]'))failures.push(name+' must test dev and main');
  if(!y.includes('npm ci'))failures.push(name+' must install immutable dependency lockfile');
 }
-if(!contents['promotion-policy.yml']?.includes('main:beta'))failures.push('Missing promotion policy');
+if(!contents['promotion-policy.yml']?.includes('main:dev'))failures.push('Missing dev-to-main PR policy');
+const auto=contents['auto-promote-main.yml']||'';
+if(!auto.includes('workflow_run:')||!auto.includes('workflows: [Documentation CI]'))failures.push('Automatic promotion must trigger after documentation CI');
+if(!auto.includes('docs-security.yml') && !fs.readFileSync('scripts/auto_promote_main.py','utf8').includes('docs-security.yml'))failures.push('Automatic promotion missing security CI verification');
+if(!auto.includes('permission-contents: write')||!auto.includes('create-github-app-token@'))failures.push('Automatic promotion must use a scoped GitHub App token');
+if(!auto.includes('workflow_dispatch:'))failures.push('Promotion must permit controlled retry after credentials are configured');
+if(!auto.includes("persist-credentials: false"))failures.push('Promotion checkout must not persist credentials');
+if(!fs.readFileSync('scripts/auto_promote_main.py','utf8').includes('"force": False'))failures.push('Promotion must disallow force pushes');
 if(failures.length){console.error(failures.join('\n'));process.exitCode=1}
 else console.log('Workflow policy, SHA pinning and main-only Pages gate passed');

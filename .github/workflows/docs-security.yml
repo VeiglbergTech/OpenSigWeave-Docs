@@ -2,9 +2,9 @@ name: Documentation Security CI
 
 on:
   push:
-    branches: [dev, beta, main]
+    branches: [dev, main]
   pull_request:
-    branches: [dev, beta, main]
+    branches: [dev, main]
 
 permissions:
   contents: read

@@ -1,0 +1,80 @@
+name: Auto-promote verified documentation dev to main
+
+on:
+  workflow_run:
+    workflows: [Documentation CI]
+    types: [completed]
+    branches: [dev]
+  workflow_dispatch:
+
+# The default GITHUB_TOKEN is read-only. Only a narrowly scoped GitHub App
+# installation token may move main, so its push triggers GitHub Pages.
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: opensigweave-docs-dev-to-main
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Verify exact dev CI and fast-forward main
+    if: >-
+      github.repository == 'VeiglbergTech/OpenSigWeave-Docs' &&
+      (github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'dev' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.path == '.github/workflows/docs-ci.yml'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check whether existing GitHub App credentials are available
+        id: credentials
+        shell: bash
+        env:
+          APP_ID: ${{ secrets.CI_PROMOTION_APP_ID }}
+          APP_KEY: ${{ secrets.CI_PROMOTION_APP_PRIVATE_KEY }}
+        run: |
+          if [[ -n "$APP_ID" && -n "$APP_KEY" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Promotion not enabled yet. Install the existing GitHub App on this repository and expose CI_PROMOTION_APP_ID and CI_PROMOTION_APP_PRIVATE_KEY."
+          fi
+      - name: Checkout exactly the candidate dev commit without persisted credentials
+        if: steps.credentials.outputs.enabled == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - name: Verify both successful push CI workflows for the exact commit
+        if: steps.credentials.outputs.enabled == 'true'
+        id: gate
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: python3 scripts/auto_promote_main.py gate
+      - name: Obtain repository-scoped GitHub App token
+        if: steps.gate.outputs.ready == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          app-id: ${{ secrets.CI_PROMOTION_APP_ID }}
+          private-key: ${{ secrets.CI_PROMOTION_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: OpenSigWeave-Docs
+          permission-actions: read
+          permission-contents: write
+      - name: Promote the CI-verified commit by fast-forward only
+        if: steps.gate.outputs.ready == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: python3 scripts/auto_promote_main.py promote

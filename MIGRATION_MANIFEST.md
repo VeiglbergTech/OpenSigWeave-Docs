@@ -6,7 +6,7 @@
 
 ## Scope and status
 
-- Astro/Starlight source is on documentation branch `dev`; GitHub Pages publication is **not** approved.
+- Astro/Starlight source is on documentation branch `dev`; GitHub Pages publishing depends on the repository Pages settings and DNS; successful CI and the configured GitHub App will automatically promote the exact verified `dev` SHA to `main`.
 - Public installation, administration, operations, developer and release pages have been updated for the first alpha.
 - The **27** mapped technical documents below are copied from the application repository's reviewed `main` snapshot with clear source/historical-reference banners and appropriate hyperlinks.
 - Older technical references can describe historical constraints. Current install/update/release pages take precedence for public user guidance.
@@ -49,4 +49,4 @@ Internal audit findings, security triage, private planning/progress notes, unrec
 
 ## Publication gate
 
-Complete documentation CI, source parity, navigation/link checks, security scanning, real browser review and an explicit maintainer approval before updating documentation `main` or enabling GitHub Pages deployment at `docs.opensigweave.de`.
+Complete documentation CI, source parity, navigation/link checks, security scanning, real browser review and the existing GitHub App's repository authorization and GitHub Pages setup before automatic promotion/deployment at `docs.opensigweave.de`.
