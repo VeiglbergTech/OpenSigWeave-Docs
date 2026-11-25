@@ -7,7 +7,7 @@ description: "First published OpenSigWeave early-access release and its known li
 
 **Published:** 25 November 2026 · **Channel:** Alpha pre-release · **Status:** Not production-certified.
 
-[Official GitHub Release](https://github.com/VeiglbergTech/OpenSigWeave/releases/tag/2026.11-alpha) · [Application source](https://github.com/VeiglbergTech/OpenSigWeave) · [Detailed release notes](/reference/release-notes-v202611/)
+[Official GitHub Release](https://github.com/VeiglbergTech/OpenSigWeave/releases/tag/2026.11-alpha) · [Application source](https://github.com/VeiglbergTech/OpenSigWeave) · [Detailed release notes](/reference/release-notes-v2026.11/)
 
 ## Release artifacts
 
