@@ -10,10 +10,9 @@ export default defineConfig({
     starlight({
       title: 'OpenSigWeave',
       description: 'Official documentation for OpenSigWeave, the self-hosted email-signature management service.',
-      // Original project logo, hosted in its GitHub source repository. Copy to a local
-      // static asset before release once binary-asset transfer is available.
+      // The pinned original project logo is verified and bundled locally by scripts/fetch-assets.mjs.
       logo: { src: './src/assets/opensigweave.png', alt: 'OpenSigWeave', replacesTitle: false },
-      favicon: '/favicon.svg',
+      favicon: '/favicon.png',
       customCss: ['./src/styles/theme.css'],
       editLink: { baseUrl: 'https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/' },
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/VeiglbergTech/OpenSigWeave' }],

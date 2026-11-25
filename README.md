@@ -26,7 +26,7 @@ npm run test:workflows
 npm run dev
 ```
 
-The build bundles the pinned OpenSigWeave logo after checking its exact Git blob hash. The website is fully static; there is no server, database, CMS or external application backend.
+The build bundles the pinned original OpenSigWeave logo as the website header image and its matching browser favicon (`/favicon.png`) after checking the exact Git blob hash. The website is fully static; there is no server, database, CMS or external application backend.
 
 ## Branch and release safety
 
