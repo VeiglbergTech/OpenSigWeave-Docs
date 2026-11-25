@@ -34,7 +34,7 @@ def de_path(path: str) -> str:
         return "/de" + path
     return path
 
-link_re = re.compile(r"(?<!!)\[([^\]\n]+)\]\((/[^)]+)\)")
+link_re = re.compile(r"(!?)\[([^\]\n]+)\]\(([^)]+)\)")
 fragment_re = re.compile(r"(`[^`\n]+`|\*\*[^*\n]+\*\*|(?<!\*)\*[^*\n]+\*(?!\*)|<[^>]+>)")
 def translated(text: str) -> str:
     if not text.strip() or not re.search(r"[A-Za-z]", text):
@@ -62,11 +62,12 @@ def linked(text: str) -> str:
     out, cursor = [], 0
     for m in link_re.finditer(text):
         out.append(translated(text[cursor:m.start()]))
-        target = m.group(2)
-        # Preserve anchors, query strings and API/asset paths.
-        match = re.match(r"([^?#]*)(.*)", target)
-        target = de_path(match.group(1)) + match.group(2)
-        out.append("[" + translated(m.group(1)) + "](" + target + ")")
+        bang, label, target = m.groups()
+        # Preserve external URLs, images, API paths, anchors and static assets.
+        if not bang and target.startswith("/"):
+            match = re.match(r"([^?#]*)(.*)", target)
+            target = de_path(match.group(1)) + match.group(2)
+        out.append(bang + "[" + translated(label) + "](" + target + ")")
         cursor = m.end()
     out.append(translated(text[cursor:]))
     return "".join(out)
