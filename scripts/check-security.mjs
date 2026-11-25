@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 const files=[],errors=[];
-function walk(p){for(const e of fs.readdirSync(p,{withFileTypes:true})){if(['node_modules','dist','.git','.astro'].includes(e.name))continue;const f=path.join(p,e.name);if(e.isDirectory())walk(f);else if(/\.(md|mdx|json|mjs|js|ts|yaml|yml|txt|css)$/.test(f))files.push(f)}}
+function walk(p){for(const e of fs.readdirSync(p,{withFileTypes:true})){if(['node_modules','dist','.git','.astro','.translate-env'].includes(e.name))continue;const f=path.join(p,e.name);if(e.isDirectory())walk(f);else if(/\.(md|mdx|json|mjs|js|ts|yaml|yml|txt|css)$/.test(f))files.push(f)}}
 walk('.');
 const patterns=[
 ['private IP',/\b(?:10\.\d{1,3}\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01])\.\d{1,3}\.\d{1,3})\b/g],

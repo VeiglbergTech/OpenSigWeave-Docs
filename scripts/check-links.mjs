@@ -15,15 +15,29 @@ const p=path.join(dist,decodeURIComponent(u.pathname).replace(/^\/+/,''));
 if(![p,path.join(p,'index.html'),p+'.html'].some(f=>fs.existsSync(f)&&fs.statSync(f).isFile()))errors.push(path.relative(dist,page)+': missing '+url);
 }
 }
-// Legal notices must be generated and linked from the footer on every route.
-for(const legal of ['impressum','datenschutz','markenhinweise']){
- if(!fs.existsSync(path.join(dist,legal,'index.html')))errors.push('missing legal route /'+legal+'/');
+// Every English route must have a real German counterpart.
+for(const page of pages) {
+  const rel=path.relative(dist,page).replaceAll('\\','/');
+  const counterpart=rel.startsWith('de/') ? rel.slice(3) : 'de/'+rel;
+  if(!fs.existsSync(path.join(dist,counterpart)))
+    errors.push(rel+': missing language counterpart '+counterpart);
 }
-for(const page of pages){
- const html=fs.readFileSync(page,'utf8');
- for(const legal of ['impressum','datenschutz','markenhinweise']){
-  if(!html.includes('href="/'+legal+'/"'))errors.push(path.relative(dist,page)+': missing legal footer link /'+legal+'/');
- }
+// Legal links must be localized on each rendered page, in both locales.
+for(const locale of ['', 'de/']) {
+  for(const legal of ['impressum','datenschutz','markenhinweise'])
+    if(!fs.existsSync(path.join(dist,locale,legal,'index.html')))
+      errors.push('missing legal route /'+locale+legal+'/');
+}
+for(const page of pages) {
+  const rel=path.relative(dist,page).replaceAll('\\','/');
+  const german=rel.startsWith('de/');
+  const prefix=german?'/de':'';
+  const html=fs.readFileSync(page,'utf8');
+  for(const legal of ['impressum','datenschutz','markenhinweise'])
+    if(!html.includes('href="'+prefix+'/'+legal+'/'))
+      errors.push(rel+': missing '+(german?'German':'English')+' legal link '+legal);
+  if(!new RegExp('<html[^>]+lang=["\\x27]'+(german?'de':'en')+'["\\x27]').test(html))
+    errors.push(rel+': wrong HTML lang value');
 }
 for(const file of ['sitemap-index.xml','CNAME','robots.txt','favicon.png'])if(!fs.existsSync(path.join(dist,file)))errors.push('missing '+file);
 if(pages.length<40)errors.push('expected 40+ pages');

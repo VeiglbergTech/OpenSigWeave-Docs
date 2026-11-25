@@ -19,7 +19,12 @@ try {
    ['/administration/signatures/','Signatures and images'],
    ['/developers/rest-api/','REST API'],
    ['/impressum/','Martin Leonhard Walleitner'],
-   ['/datenschutz/','Datenschutzerklärung'],
+   ['/datenschutz/','Privacy policy'],
+   ['/de/','OpenSigWeave'],
+   ['/de/impressum/','Martin Leonhard Walleitner'],
+   ['/de/datenschutz/','Datenschutzerklärung'],
+   ['/de/markenhinweise/','CodeTwo'],
+   ['/de/getting-started/quickstart/','OpenSigWeave'],
    ['/markenhinweise/','CodeTwo'],
  ];
  for(const [route,needle] of tests){
@@ -49,7 +54,7 @@ try {
    if(!desktop.includes('href="/'+legal+'/"/>')&&!desktop.includes('href="/'+legal+'/"'))throw new Error('Desktop legal footer link missing: '+legal);
    if(!mobile.includes('href="/'+legal+'/"/>')&&!mobile.includes('href="/'+legal+'/"'))throw new Error('Mobile legal footer link missing: '+legal);
  }
- console.log('Browser smoke passed: seven routes, Chromium desktop/mobile, accessible legal footer, theme preference and official favicon');
+ console.log('Browser smoke passed: bilingual routes, Chromium desktop/mobile, accessible legal footer, theme preference and official favicon');
 } finally {
  server.kill('SIGTERM');
 }

@@ -6,7 +6,7 @@ This only runs while preparing a build, not when a visitor browses the website.
 import argostranslate.package
 import argostranslate.translate
 
-if not any(l.code == 'en' and any(t.to_lang.code == 'de' for t in l.translations) for l in argostranslate.translate.get_installed_languages()):
+if not any(l.code == 'de' for l in argostranslate.translate.get_installed_languages()):
     argostranslate.package.update_package_index()
     packages = argostranslate.package.get_available_packages()
     pair = next((p for p in packages if p.from_code == 'en' and p.to_code == 'de'), None)

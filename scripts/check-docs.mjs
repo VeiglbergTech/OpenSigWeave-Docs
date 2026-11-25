@@ -30,7 +30,17 @@ for(const legal of ['impressum','datenschutz','markenhinweise']){
 if(!cfg.includes("Footer: './src/components/LegalFooter.astro'"))errors.push('Missing global legal footer override');
 const legalFooter=fs.readFileSync('src/components/LegalFooter.astro','utf8');
 for(const legal of ['impressum','datenschutz','markenhinweise']){
- if(!legalFooter.includes('href="/'+legal+'/"'))errors.push('Missing permanent footer link: '+legal);
+ if(!legalFooter.includes('/'+legal+'/'))errors.push('Missing localized footer link: '+legal);
 }
 if(cfg.includes("localStorage.setItem('starlight-theme', 'dark')"))errors.push('Do not persist an unsolicited theme preference');
-if(errors.length){console.error(errors.join('\n'));process.exitCode=1}else console.log('Markdown navigation and links passed: '+pages.length+' pages');
+const canonicalPages=pages.filter(p=>!path.relative(root,p).replaceAll('\\','/').startsWith('de/'));
+for(const p of canonicalPages){
+ const relative=path.relative(root,p).replaceAll('\\','/');
+ if(!fs.existsSync(path.join(root,'de',relative)))errors.push(relative+': missing German counterpart');
+}
+for(const p of pages.filter(p=>path.relative(root,p).replaceAll('\\','/').startsWith('de/'))){
+ const relative=path.relative(root,p).replaceAll('\\','/').slice(3);
+ if(!fs.existsSync(path.join(root,relative)))errors.push(relative+': orphan German translation');
+}
+\nif(errors.length){console.error(errors.join('\n'));process.exitCode=1}else console.log('Bilingual Markdown navigation and links passed: '+pages.length+' pages');
+
