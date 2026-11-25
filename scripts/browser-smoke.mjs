@@ -1,5 +1,3 @@
-import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import {spawn,spawnSync} from 'node:child_process';
 const host='http://127.0.0.1:4447';
@@ -20,6 +18,9 @@ try {
    ['/getting-started/quickstart/','Quick start'],
    ['/administration/signatures/','Signatures and images'],
    ['/developers/rest-api/','REST API'],
+   ['/impressum/','Martin Leonhard Walleitner'],
+   ['/datenschutz/','Datenschutzerklärung'],
+   ['/markenhinweise/','CodeTwo'],
  ];
  for(const [route,needle] of tests){
    const response=await fetch(host+route);
@@ -29,7 +30,7 @@ try {
  }
  // Fetch this before launching multiple Chromium processes. Node HTTP keep-alive
  // sockets can become stale while Chromium workloads occupy the runner.
- const logo=await fetch(host+'/favicon.svg',{headers:{Connection:'close'}});
+ const logo=await fetch(host+'/favicon.png',{headers:{Connection:'close'}});
  if(!logo.ok)throw new Error('Website favicon was not served');
  function chromeDom(route,width,height){
    const args=['--headless=new','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--disable-background-networking','--no-first-run','--hide-scrollbars','--window-size='+width+','+height,'--virtual-time-budget=2000','--dump-dom',host+route];
@@ -41,11 +42,14 @@ try {
  if(!desktop.includes('OpenSigWeave'))throw new Error('Desktop browser title missing');
  const mobile=chromeDom('/getting-started/quickstart/',390,844);
  if(!mobile.includes('Quick start'))throw new Error('Mobile browser content missing');
- // Verify a recognizable dark-mode initialization is present and the theme
- // chooser remains part of Starlight rather than being removed by customization.
- if(!desktop.includes('data-theme="dark"')&&!desktop.includes('data-theme=dark'))throw new Error('Expected dark theme as default');
-
- console.log('Browser smoke passed: four routes, Chromium desktop/mobile, dark theme and favicon');
+ // The page follows the user's system preference until the visitor explicitly
+ // chooses a theme; do not store a default theme automatically.
+ if(!/data-theme=["'](?:dark|light)["']/.test(desktop))throw new Error('Expected resolved Starlight theme');
+ for(const legal of ['impressum','datenschutz','markenhinweise']){
+   if(!desktop.includes('href="/'+legal+'/"/>')&&!desktop.includes('href="/'+legal+'/"'))throw new Error('Desktop legal footer link missing: '+legal);
+   if(!mobile.includes('href="/'+legal+'/"/>')&&!mobile.includes('href="/'+legal+'/"'))throw new Error('Mobile legal footer link missing: '+legal);
+ }
+ console.log('Browser smoke passed: seven routes, Chromium desktop/mobile, accessible legal footer, theme preference and official favicon');
 } finally {
  server.kill('SIGTERM');
 }
