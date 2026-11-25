@@ -1,22 +1,21 @@
 ---
-title: "Features and release status"
-description: "Implemented features and explicitly experimental integrations."
+title: "Features and compatibility"
+description: "Current 2026.11-alpha functionality and acceptance boundaries."
 ---
 
-## Implemented in the release candidate
+## Available in 2026.11-alpha
 
-- Web administration with domains, signatures, immutable version history and restore-as-new-version.
-- CKEditor visual and HTML-source editing, persistent upload assets, custom branding.
-- Reusable signature groups with weighted no-repeat selection; sender/domain/group and directory-attribute matching.
-- Date-and-time scheduling, precedence resolution and per-user overrides.
-- Local emergency administrator, managed OIDC and LDAP/Active Directory providers.
-- PostgreSQL database, Alembic migrations, diagnostics, encrypted disaster recovery and selective export/import.
-- Adapter-neutral engine API and the Rspamd path tested with MIME fixtures.
+- Administration portal with **Domains**, **Signatures**, **Signature Groups** and **Rules**.
+- CKEditor editing, HTML source, uploaded signature assets, version history and restore-as-new-version.
+- Weighted group selection without immediate repetition where applicable, sender/domain rules, user overrides and scheduled signature campaigns.
+- Managed identity providers (LDAP/Active Directory and OIDC/Authentik), domain-specific identity mappings and fallback attributes. Identity-provider availability varies by test path.
+- Local administrator, branding, selective import/export and encrypted backup rules.
+- An adapter-neutral engine with Mailcow/Rspamd integration, plus **experimental** Postfix Milter and Stalwart hook adapters.
 
-## Experimental or not certified
+## What has and has not been verified
 
-**Postfix Milter** and **Stalwart MTA-hook** integrations have automated compatibility/regression coverage but require live SMTP/DKIM acceptance. Native Mailcow integration, and adapters for other mail servers, are not claimed as ready. See [adapter status](/developers/adapters/).
+The isolated Mailcow/SOGo path includes selected live signed-email, CID images, nested reply, rotation, scheduling, Authentik and recovery checks. That is not proof of compatibility with all message types or deployment topologies.
 
-## Acceptance boundary
+Live LDAP acceptance, Outlook and Thunderbird mail-client testing, external DKIM acceptance, sustained load, cross-host recovery and independent fail-closed behaviour when both Rspamd injector and guard are missing remain outstanding. Content Security Policy is report-only.
 
-Passing GitHub Actions is not equivalent to successful operation on a real production mail flow. Consult the [release notes](/releases/release-notes/).
+The complete [release notes](/releases/release-notes/) and [mail acceptance matrix](/reference/mail-usage-acceptance-matrix/) distinguish implementation, laboratory tests and production certification.

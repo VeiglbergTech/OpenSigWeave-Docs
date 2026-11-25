@@ -1,12 +1,12 @@
 ---
 title: "Changelog"
-description: "Release history and current publication status"
+description: "Published OpenSigWeave releases, not unreleased development milestones."
 ---
 
-## v2026.11 / v1.0 candidate — not released
+## 2026.11-alpha — 25 November 2026
 
-The candidate covers versioned signature management, CKEditor assets, groups, prioritized rules, scheduling, OIDC/LDAP provider management, branding, encrypted backups and the Rspamd adapter with automated MIME regression tests.
+**First published early-access release.** Added the standalone PostgreSQL/FastAPI portal, reusable versioned signatures, CKEditor, signature groups and rotation, sender/domain rules, time windows, identity-provider mappings, domain fallbacks, branding, backup rules and adapter-based mail injection.
 
-**This is not an official release.** No production release tag or certified shipping commit is available from this documentation migration. See [candidate release notes](/reference/release-notes-v202611/).
+The image is available on GHCR as `2026.11-alpha` and `alpha`; it is **not** a stable release. Refer to the [release notes](/releases/release-notes/) and [technical release notes](/reference/release-notes-v202611/) for security and compatibility boundaries.
 
-Older stable versions can be archived under \`/versions/\` as releases occur, but no archive should be fabricated before a genuine release.
+Future `YYYY.MM-alphaN`, `YYYY.MM-betaN` and stable tags will be listed only after actual publication. Do not confuse the `main`, `beta` and `dev` branches with moving container-image aliases.

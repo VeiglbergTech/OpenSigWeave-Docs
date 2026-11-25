@@ -1,27 +1,33 @@
 ---
 title: "OpenSigWeave documentation"
-description: "Install, configure, operate and extend OpenSigWeave."
+description: "Official OpenSigWeave installation, administration, operations and developer documentation."
 ---
 
-# OpenSigWeave Documentation
+# OpenSigWeave documentation
 
-OpenSigWeave is a self-hosted, mail-server-independent email signature manager with a browser administration portal, PostgreSQL configuration storage, versioned templates, selection rules and adapter-based delivery.
+**Self-hosted, open-source server-side email signature management**, with an administration portal, sender/domain rules, signature groups, scheduled campaigns, directory attributes and a mail-adapter interface.
 
-> **Release status:** The November 2026 v2026.11 / v1.0 candidate has **not** been released or certified for production. These pages document the currently implemented development candidate. Live Mailcow/DKIM, identity-provider and real-mail-client acceptance remain necessary.
+> **Published release — 25 November 2026:** [2026.11-alpha](https://github.com/VeiglbergTech/OpenSigWeave/releases/tag/2026.11-alpha), an **early-access pre-release**, with the container image `ghcr.io/veiglbergtech/opensigweave:2026.11-alpha`. This is **not** a stable or production-certified release.
 
 ## Start here
 
-- [Quick start](/getting-started/quickstart/) — run the standalone application.
-- [First signature](/getting-started/first-signature/) — create a template, assign it to a domain and check rules.
-- [Mailcow integration](/installation/mailcow/) — staging-only Rspamd integration.
-- [Backups and restore](/operations/backup/) — encrypted full-backup workflow.
-- [API reference](/developers/rest-api/) — administrator and mail-adapter boundaries.
-- [Adapter support](/developers/adapters/) — implemented versus experimental.
+- [Installation overview](/getting-started/quickstart/) — the first published image and source revision check.
+- [System requirements](/getting-started/requirements/) — Linux, Docker, Compose, reverse proxy and firewall.
+- [Interactive installation](/installation/docker-compose/) — install the approved image without building it locally.
+- [Initial configuration](/installation/first-configuration/) — administrator credentials, host allowlist, proxies and bind address.
+- [Create a signature](/getting-started/first-signature/) — first domain, template and rule.
+- [Mailcow and Rspamd](/installation/mailcow/) — controlled integration and required tests.
+- [Backups and updates](/operations/backup/) — optional backup rules and recovery.
+- [Release notes](/releases/release-notes/) — verified scope and known limitations.
 
-## Design boundaries
+## Maturity and limits
 
-The application runs independently of Mailcow. Mail clients such as SOGo, Outlook and Thunderbird are **not** mail transport adapters. Rspamd is the integration path covered by automated MIME testing; Postfix Milter and Stalwart hooks remain experimental. See [transport compatibility](/reference/client-compatibility/) and [adapter architecture](/reference/adapters/).
+The Mailcow/Rspamd and SOGo path passed selected isolated live tests including MIME/CID, replies, rules and scheduling. Authentik was observed working. **LDAP/Active Directory live acceptance, Outlook, Thunderbird, external DKIM and fully independent missing-injector enforcement remain unverified.** The Postfix Milter and Stalwart hook are experimental.
+
+Mailcow, Postfix or another email system still manages authenticated senders, mail transport and DKIM. OpenSigWeave does **not** authorize a sender or replace SMTP/IMAP. See the [mail acceptance matrix](/reference/mail-usage-acceptance-matrix/) before enabling real mail processing.
 
 ## Documentation status
 
-All published content must match an approved application commit. The [candidate release notes](/releases/release-notes/) explain open acceptance work; this preview must not be mistaken for a release.
+This documentation is reviewed against [application main commit `33dc846915ad`](https://github.com/VeiglbergTech/OpenSigWeave/commit/33dc846915adb7d27e7993e162612590c35b962f). The published image was built from the earlier release commit [`29f43e9c5df7`](https://github.com/VeiglbergTech/OpenSigWeave/commit/29f43e9c5df70fa09576422b86f55c2e4d5c9e3c). Later documentation-only commits on `main` do not automatically produce a matching image. Consult the [source/image parity warning](/installation/docker-compose/) before deployment.
+
+The documentation website is being prepared on its separate `dev` branch; appearance here does not mean GitHub Pages has been published.

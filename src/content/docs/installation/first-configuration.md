@@ -1,20 +1,27 @@
 ---
-title: "Configuration generator"
-description: "Create and safely review the local .env file."
+title: "Initial configuration"
+description: "Use the configuration wizard instead of manually generating secrets."
 ---
 
-Run `./generate_config.sh` before a first installation, or let `./install.sh` run the same interactive generator. Administrator passwords are read without echo, confirmed and stored exclusively as scrypt hashes. PostgreSQL, session and engine credentials are generated independently.
+## Interactive setup
+
+Run `./install.sh` to configure and start the stack, or `./generate_config.sh` to prepare `.env` without starting the service. Existing configuration is preserved; the generator does not silently rotate credentials.
 
 ```bash
-./generate_config.sh             # create .env only if absent
-./generate_config.sh --check     # validate existing .env without changes
-./generate_config.sh --preview   # list proposed safe optional additions only
-./generate_config.sh --migrate   # confirm and append missing safe defaults
-./generate_config.sh --migrate --yes  # controlled automation of optional additions
+./generate_config.sh
+./generate_config.sh --check
+./generate_config.sh --preview
+./generate_config.sh --migrate
 ```
 
-The generator refuses to replace or regenerate an existing file and refuses symlinks or duplicate settings. Migration does not rotate existing credentials and writes changes atomically with mode 0600. Missing required secret, FQDN or administrator credentials are not guessed; add them manually under administrator control before retrying. Review any new configuration keys and firewall/proxy changes separately.
+The initial wizard requests:
 
-The application supports local authentication and administrator-configured identity providers; the installer does not modify their database records or persistent credential volume. Never put age private keys, live `.env` or identity-provider tokens into Git.
+- **Hostname / allowed hosts:** `APP_ALLOWED_HOSTS` is a comma-separated list of hostnames; no URL schemes, wildcard or ports.
+- **Bind address:** `APP_BIND_ADDRESS` defaults to `0.0.0.0`, all IPv4 host interfaces, for a new installation.
+- **Trusted proxies:** `TRUSTED_PROXY_CIDRS` should contain only actual immediately connected reverse proxy IPs/narrow CIDRs; never `0.0.0.0/0` or `::/0`.
+- **Administrator account:** initial local email, hidden password and confirmation.
+- **Port:** automatic selection from 8085 through 8105 where available.
 
-For continuous operation follow [Safe updates](/installation/updates/) and [Backup](/operations/backup/).
+The scripts automatically create `POSTGRES_PASSWORD`, `SECRET_KEY`, `ENGINE_API_KEY` and backup-location encryption material. There is **no** `--bind-address` parameter; select the address at the wizard prompt. To change an existing bind address, edit the protected `.env` deliberately and recreate the affected container.
+
+Never commit `.env`, access keys, passwords or recovery identities. `APP_ALLOWED_HOSTS` and trusted proxy settings do not replace network firewall controls. Read [configuration and installer reference](/reference/install-update/).

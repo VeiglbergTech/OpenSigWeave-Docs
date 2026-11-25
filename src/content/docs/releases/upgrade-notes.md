@@ -1,10 +1,10 @@
 ---
-title: "Release upgrade notes"
-description: "Upgrade prerequisites for candidate deployments"
+title: "Upgrade notes for alpha installations"
+description: "Source-verified image updates and migration safeguards."
 ---
 
-Before moving between release candidates, create and verify a full encrypted backup, record the exact prior Git SHA, review migration notes and test the resulting HTML/plain-text mail content in staging.
+The first published release is `2026.11-alpha`. For any next alpha version, record your current Git SHA and image, review the changelog and test on an isolated installation. On `main`, the update tool will not accept a Docker image whose embedded source revision differs from the intended Git commit.
 
-Keep the original Compose volumes. Consult [operational upgrades](/operations/upgrades/) and the [complete recovery guide](/reference/upgrade/) for detailed sequencing and potential rollback constraints.
+Use `./update.sh --prefetch` and `./update.sh --dry-run` before changing your deployment. Pre-update backups are optional when no enabled Backup Rule exists, but a failed configured backup requires explicit administrator approval to proceed without a recovery point.
 
-There is no automatically published stable Docker image from this documentation project. Container publishing is a separate, manually approved responsibility of the application repository.
+A database migration cannot be safely undone just by using an older Git checkout. Maintain the original encrypted archives and age identity if you expect reliable recovery. Review [operational upgrades](/operations/upgrades/).

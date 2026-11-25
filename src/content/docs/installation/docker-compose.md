@@ -1,29 +1,42 @@
 ---
-title: "Docker Compose installation"
-description: "Install or resume the standalone OpenSigWeave stack."
+title: "Install on Linux with Docker Compose"
+description: "Interactive installation that pulls a source-verified published GHCR image."
 ---
 
-## Supported standalone installation
+## Install the published alpha
 
-A Linux x86_64/aarch64 host with Docker Engine 24+, Docker Compose v2.20+, Git, Python 3, at least 2 GiB RAM, 6 GiB available disk space, and access to the public repository is required. Keep additional space on a *separate remote filesystem* for encrypted backups. Docker permissions must already be granted to the operator; the installer does not install packages or change your firewall.
+The source repository contains `install.sh`, `generate_config.sh` and `update.sh`. The release configuration pulls from **GitHub Container Registry**, not a local Docker build.
 
 ```bash
-git clone https://github.com/VeiglbergTech/OpenSigWeave.git
+git clone --branch main https://github.com/VeiglbergTech/OpenSigWeave.git
 cd OpenSigWeave
 ./install.sh
+./generate_config.sh --check
+docker compose ps
 ```
 
-The installer asks the current channel (which must match the existing Git checkout), public FQDN, bind IP, host port, local administrator address and confirmed password. It generates **three independent cryptographic secrets** and hashes the administrator password using the application's existing scrypt algorithm. Credentials are not printed. The `.env` file is created with permissions 0600 and must never be committed.
+> **Important snapshot caveat:** The published `2026.11-alpha` image was built from commit `29f43e9c5df70fa09576422b86f55c2e4d5c9e3c`. The `main` branch later advanced to a README-only commit. Because installation checks that the image's `org.opencontainers.image.revision` equals the checkout SHA, the commands above will be refused while those commits differ. For a *fresh clone only*, follow the [release-commit checkout procedure](/getting-started/quickstart/) first. Do not reset an existing running installation.
 
-For a non-default channel, clone that branch explicitly:
+The wizard prompts for host/FQDN, administrator email and password, application bind address (default `0.0.0.0`), allowed hostname list, trusted proxy addresses/CIDRs and any optional configuration. It generates secure independent secrets, writes a permission-restricted `.env`, provisions PostgreSQL, and starts the containers.
 
-```bash
-git clone --branch beta https://github.com/VeiglbergTech/OpenSigWeave.git
-# or: git clone --branch dev https://github.com/VeiglbergTech/OpenSigWeave.git
-```
+The initial admin password is requested without terminal echo. The installer supports an **explicitly requested** generated-password mode for unattended installation; such a recovery file must be protected and removed after secure import.
 
-`dev` and `beta` are not production-approved releases. The installer does not automatically switch branches. After validating Docker Compose, it starts PostgreSQL, builds the application locally and waits for database and app healthchecks, Alembic and basic volume availability. On partial failure, existing configuration and Docker volumes remain; fix the cause and rerun `./install.sh`. An already healthy installation is not overwritten.
+## Image tags and channels
 
-A same-host reverse proxy should connect to `127.0.0.1:8085` by default. The public URL must use HTTPS, terminated by that proxy. If the proxy is remote, use the host's **private bind IP** and firewall-allow only the proxy. The container still listens on port 8085; `APP_PORT` changes only the **host** port mapping.
+| Deployment | Image/source |
+| --- | --- |
+| Published `2026.11-alpha` | `ghcr.io/veiglbergtech/opensigweave:2026.11-alpha` |
+| Moving alpha alias | `ghcr.io/veiglbergtech/opensigweave:alpha` |
+| `main` | Prebuilt image only, with **exact source-SHA matching** |
+| `dev` and `beta` | Unreleased source; local build overlay |
 
-This Compose project is independent of mailcow and does not change any mail server. See [First configuration](/installation/first-configuration/) and [Safe updates](/installation/updates/).
+Set `OSW_IMAGE_TAG=2026.11-alpha` in the protected `.env` if you want an explicit immutable tag. The default is `alpha`. An image tag alone cannot bypass the source-revision check.
+
+## After installation
+
+1. Restrict the application port at the host firewall. A `0.0.0.0` bind is **not** a security control.
+2. Terminate HTTPS at your reverse proxy and configure its IP in `TRUSTED_PROXY_CIDRS` only if needed.
+3. Open the portal through an allowed hostname and sign in as the initial administrator.
+4. Create your domain, signature and rule; validate in staging before enabling the mail adapter.
+
+See the [source installation reference](/reference/install-update/) and [reverse proxy guide](/installation/reverse-proxy/). This Compose stack does not install or alter Mailcow itself.

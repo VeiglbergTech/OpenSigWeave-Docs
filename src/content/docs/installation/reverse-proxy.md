@@ -1,14 +1,14 @@
 ---
-title: "Reverse proxy and HTTPS"
-description: "Safe HTTPS exposure and asset delivery."
+title: "Reverse proxy, HTTPS and firewall"
+description: "Secure application bind addresses, allowed hosts and trusted proxy configuration."
 ---
 
-Place a supported reverse proxy in front of the application on port \`8085\`. Keep the default loopback bind when the proxy is on the same Linux host; for a separate proxy, bind only to a private interface and firewall the service to the proxy's private address.
+The web portal should be reached through an **HTTPS reverse proxy**. OpenSigWeave itself does not provision TLS or firewall rules. For a reverse proxy on the same Linux machine choose `127.0.0.1` at the new-install bind prompt. For a different machine, choose the application's private IPv4 address and allow only the proxy IP through the firewall.
 
-## Important routes
+**New installs default to `APP_BIND_ADDRESS=0.0.0.0`.** This listens on every IPv4 host interface and may be publicly reachable without a suitable firewall.
 
-- Administration, login and management APIs must remain protected by their normal application authorization.
-- \`GET /signature-assets/<hash>.<extension>\` must be publicly reachable without an administrator session if remote signature images should display in recipients' mail clients.
-- The \`POST /api/admin/signature-assets\` route remains administrator-only, session/CSRF protected.
+Configure `APP_ALLOWED_HOSTS` with explicit DNS names, and trust only the immediate reverse proxy in `TRUSTED_PROXY_CIDRS`. Do not trust all networks. The application uses the latter for forwarded-header/client-IP handling, not for access control.
 
-Configure \`APP_ALLOWED_HOSTS\` to the intended externally visible hostname. Restrict \`TRUSTED_PROXY_CIDRS\` to the real trusted proxy network if forwarded source addresses are used. Never disable TLS verification for OIDC, LDAP or engine HTTPS.
+Image assets intended for recipients need public HTTPS access to `GET /signature-assets/...`; uploads and administration remain authenticated. Check that the reverse proxy does not block legitimate asset URLs, expose internal configuration or bypass the application's authentication.
+
+After proxy changes, test portal login, CSRF protection, public asset GET and a staging message's rendered signature. See [installation security details](/reference/install-update/).

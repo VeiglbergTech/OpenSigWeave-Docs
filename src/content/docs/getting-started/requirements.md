@@ -1,21 +1,24 @@
 ---
 title: "System requirements"
-description: "Runtime and infrastructure prerequisites."
+description: "Supported host requirements and optional identity and mail integrations."
 ---
 
-## Application runtime
+## Required
 
-- Linux host with Docker Engine and Docker Compose plugin v2.
-- Git to check out the tested application branch.
-- PostgreSQL 17 is included in the existing Compose stack; do not publish the database port.
-- A DNS hostname and HTTPS reverse proxy for administrator access and public signature assets.
-- An independent random PostgreSQL password, session secret and engine API key.
-- For full encrypted disaster recovery, the \`age\` tool plus a securely stored offline private identity.
+- Linux x86_64 or aarch64 with Docker Engine **24+**, Docker Compose **2.20+**, Git, Python 3 and Docker daemon permissions.
+- At least **2 GiB RAM** and **6 GiB free disk**; allow extra storage for images, mail logs and any configured backups.
+- A working HTTPS reverse proxy and DNS name for browser access and public signature assets, unless testing only on localhost.
+- PostgreSQL 17 is provisioned inside the standalone Compose stack. Do not expose PostgreSQL to the public network.
+- A firewall policy limiting access to the application's management port.
 
-OpenSigWeave's Compose service listens on internal port **8085** and binds by default to **127.0.0.1** on the host.
+The interactive installer generates the database, session and engine secrets automatically.
 
-## Optional services
+## Binding defaults
 
-OIDC and LDAP are optional. A local emergency administrator remains necessary. Use a staging mailserver and valid DNS/TLS to validate a chosen adapter.
+A **new** installation proposes `APP_BIND_ADDRESS=0.0.0.0` and chooses an available port beginning at 8085. **0.0.0.0 means all IPv4 interfaces**, not loopback-only. Use `127.0.0.1` if the reverse proxy runs on the same machine, or a specific private address if it runs elsewhere. Either way, block untrusted connections with your firewall.
 
-See the [Compose file](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/compose.yaml) and [example configuration](https://github.com/VeiglbergTech/OpenSigWeave/blob/dev/.env.example).
+## Optional
+
+LDAP/LDAPS, Authentik/OIDC, backup rules, Local/SMB backup destinations and mail-server adapters are optional. Only the local administrator is required at initial setup; the installer provisions it interactively. Mailcow/Rspamd must be configured separately.
+
+Read [interactive installation](/installation/docker-compose/) and [network security](/installation/reverse-proxy/).

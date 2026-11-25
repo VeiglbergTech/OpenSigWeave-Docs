@@ -1,10 +1,16 @@
 ---
-title: "Domains"
-description: "Domain scope and authentication/provider mapping"
+title: "Domains and identity fallbacks"
+description: "Configure sender domains, identity providers, fallback values and rule scope."
 ---
 
-Register the sender's domain in **Domains** before depending on domain-scoped signatures. Each domain can have a login identity provider, an optional profile-attribute provider, eligible signature assignment and defaults.
+Under **Domains**, configure each managed sender domain and its signature eligibility. Use the domain-management dialog for identity and authentication settings instead of attempting to change provider assignments directly from a table.
 
-Domain-level configuration and sender-specific rules determine which templates are considered for selection. A configured domain does not prove that a user is allowed to send from that address: the email platform must authorize the sender before invoking an adapter.
+A domain can have **Identity Provider** settings for profile attributes and separate **Authentication / SSO Provider** settings for portal sign-in. Local administrator access remains distinct.
 
-Test a new domain with a staging account and inspect which rule wins. See [Rules and priorities](/administration/rules/) and [identity providers](/administration/oidc/).
+### Fallback attributes
+
+Domain-specific fallback values can provide missing names, job title, company and contact details when a known or unknown sender has no corresponding profile value. Available LDAP/OIDC attributes have priority. A missing fallback leaves a field empty. **The real sender address is never replaced by a fallback value.** Distinguish an unknown user from a technical identity-provider outage.
+
+Configured domains do not imply send-as authorization. The outgoing mail server must enforce sender and alias permissions before adapter processing.
+
+See [fallback design and mappings](/reference/domain-fallbacks/), [identity providers](/administration/oidc/) and [rules](/administration/rules/).

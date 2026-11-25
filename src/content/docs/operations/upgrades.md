@@ -1,12 +1,15 @@
 ---
-title: "Operational upgrade guide"
-description: "Safe upgrade and rollback boundaries"
+title: "Operational upgrade checklist"
+description: "Preflight, source/image parity, optional backups and rollback safety."
 ---
 
-1. Record the current application Git SHA and Compose image IDs.
-2. Verify a newly created encrypted full backup and the availability of the offline recovery identity.
-3. Read the target release's [breaking changes](/releases/breaking-changes/), Alembic changes and [upgrade details](/reference/upgrade/).
-4. Rebuild and start the approved target commit, inspect health and test admin login and signature preview.
-5. Test adapter MIME output, sender authorization and DKIM in staging before changing production flow.
+1. Record the current branch/commit, GHCR image tag, `docker compose ps`, schema revision and any external adapter configuration.
+2. Run `./update.sh --check`, `--prefetch` and `--dry-run` to review a proposed change before applying it.
+3. On `main`, confirm the target Git commit has an approved **matching GHCR image**. A source-only README change must not be treated as an application image release.
+4. Review active Backup Rules. With no rules, the update proceeds without a warning; if a configured backup fails, choose deliberately whether to override the default abort.
+5. Review schema or adapter changes and use additional approval for breaking changes.
+6. Apply `./update.sh`, then check database migrations, both health checks, administrator login, assets, identity resolution and representative staging messages.
 
-A database migration may prevent simply checking out the old Git commit as a rollback. Use the tested full-restore procedure when necessary. Do not remove Docker volumes to work around schema errors.
+A migration or startup failure may leave the protected update journal and require a **fresh-target restore**. Merely checking out an older branch does not reverse PostgreSQL migrations.
+
+See [updates](/installation/updates/), [backup](/operations/backup/) and [release notes](/releases/release-notes/).
