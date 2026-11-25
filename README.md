@@ -9,7 +9,7 @@ Official source for the static **OpenSigWeave email-signature manager documentat
 - [Documentation source](src/content/docs/)
 - [Source migration mapping](MIGRATION_MANIFEST.md)
 - [Source review and integrity manifest](source-manifest.json)
-- **Future website:** https://docs.veiglbergtech.com (**not yet published**)
+- **Documentation domain (after publication):** https://docs.opensigweave.de (**not yet published**)
 
 ## Develop and test locally
 

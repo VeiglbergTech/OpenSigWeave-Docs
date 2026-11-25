@@ -13,8 +13,8 @@ Create rulesets for \`dev\`, \`beta\`, \`main\`: require pull requests and relev
 3. In Settings → Environments → \`github-pages\`, set **Deployment branches: Selected branches → main**. Add required reviewers if supported by your GitHub plan and require the maintainer's explicit approval.
 4. The \`pages.yml\` workflow uses only \`push\` to \`main\` and has an extra \`github.ref == 'refs/heads/main'\` guard. It never runs from \`dev\` or \`beta\`.
 5. Verify custom-domain ownership and enable **Enforce HTTPS** once GitHub has issued the certificate.
-6. Create a manual DNS CNAME: **Host/Name:** \`docs\`, **Type:** \`CNAME\`, **Target/Value:** \`veiglbergtech.github.io\` (no protocol or path). This is an organizational GitHub Pages project site using a custom subdomain. Do not create conflicting A/AAAA records or another CNAME at \`docs\`.
-7. Add the custom domain \`docs.veiglbergtech.com\` in Settings → Pages. Repository \`public/CNAME\` mirrors the value, and \`site\` is configured in Astro. Verify GitHub's DNS checks and certificate issuance before publication.
+6. In the DNS zone `opensigweave.de`, create a manual DNS CNAME: **Host/Name:** \`docs\`, **Type:** \`CNAME\`, **Target/Value:** \`veiglbergtech.github.io\` (no protocol or path). This is an organizational GitHub Pages project site using the custom domain under the opensigweave.de DNS zone. Do not create conflicting A/AAAA records or another CNAME at \`docs\`.
+7. Add the custom domain \`docs.opensigweave.de\` in Settings → Pages. Repository \`public/CNAME\` mirrors the value, and \`site\` is configured in Astro. Verify GitHub's DNS checks and certificate issuance before publication.
 8. Optionally add GitHub's \`_github-pages-challenge-veiglbergtech.docs\` DNS TXT record **only if GitHub explicitly requests it** for verified ownership; use GitHub's displayed token, not a guessed one.
 
 ## Versions

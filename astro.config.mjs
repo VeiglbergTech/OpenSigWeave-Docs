@@ -3,7 +3,7 @@ import starlight from '@astrojs/starlight';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  site: 'https://docs.veiglbergtech.com',
+  site: 'https://docs.opensigweave.de',
   output: 'static',
   trailingSlash: 'always',
   integrations: [
@@ -32,7 +32,7 @@ export default defineConfig({
         // Only set an initial preference, preserving the visitor's explicit choice.
         { tag: 'script', content: "try { if (!localStorage.getItem('starlight-theme')) localStorage.setItem('starlight-theme', 'dark'); } catch {}" },
         { tag: 'meta', attrs: { property: 'og:site_name', content: 'OpenSigWeave Docs' } },
-        { tag: 'meta', attrs: { property: 'og:image', content: 'https://docs.veiglbergtech.com/og.svg' } },
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://docs.opensigweave.de/og.svg' } },
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
       ],
     }),

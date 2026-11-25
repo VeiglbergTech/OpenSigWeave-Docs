@@ -49,4 +49,4 @@ Internal audit findings, security triage, private planning/progress notes, unrec
 
 ## Publication gate
 
-Complete documentation CI, source parity, navigation/link checks, security scanning, real browser review and an explicit maintainer approval before updating documentation `main` or enabling GitHub Pages deployment at `docs.veiglbergtech.com`.
+Complete documentation CI, source parity, navigation/link checks, security scanning, real browser review and an explicit maintainer approval before updating documentation `main` or enabling GitHub Pages deployment at `docs.opensigweave.de`.
