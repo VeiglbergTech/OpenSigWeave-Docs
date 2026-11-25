@@ -146,6 +146,10 @@ def main():
             continue
         url = "/" + rel.with_suffix("").as_posix().replace("index", "").rstrip("/") + "/"
         translated_file = translate_markdown(original).replace("{url}", url)
+        # These localized Markdown files exist only during the build.
+        # Link readers to the maintained English source instead of a 404 on GitHub.
+        source_edit = "https://github.com/VeiglbergTech/OpenSigWeave-Docs/edit/dev/src/content/docs/" + rel.as_posix()
+        translated_file = translated_file.replace("---\\n", "---\\neditUrl: " + json.dumps(source_edit) + "\\n", 1)
         translated_file = translated_file.replace("\n---\n\n> **Hinweis:**", "\n---\n\n<!-- MACHINE-TRANSLATED -->\n\n> **Hinweis:**", 1)
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(translated_file, encoding="utf-8")
