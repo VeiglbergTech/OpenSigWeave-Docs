@@ -1,23 +1,37 @@
-# OpenSigWeave documentation
+# OpenSigWeave Docs — documentation website
 
-Astro + Starlight static documentation source for the OpenSigWeave project.
+Official source for the static **OpenSigWeave email-signature manager documentation**, built using **Astro + Starlight** and hosted exclusively on **GitHub Pages** after publication approval.
 
-**Status:** Under development on \`dev\`. No public Pages deployment has been approved. \`main\` must not be updated before manual approval and actual beta testing.
+**Prepared release baseline:** [OpenSigWeave 2026.11-alpha](https://github.com/VeiglbergTech/OpenSigWeave/releases/tag/2026.11-alpha), published 25 November 2026. This is an **early-access pre-release**, not a stable or production-certified version.
 
-- Source application: [VeiglbergTech/OpenSigWeave](https://github.com/VeiglbergTech/OpenSigWeave)
-- Future documentation URL: https://docs.veiglbergtech.com
-- Deployment: GitHub Actions → GitHub Pages, only on \`main\`
-- Documentation source: \`src/content/docs/\`
-- Project migration evidence: \`MIGRATION_MANIFEST.md\`
+- [Application repository](https://github.com/VeiglbergTech/OpenSigWeave)
+- [Published source tag](https://github.com/VeiglbergTech/OpenSigWeave/releases/tag/2026.11-alpha)
+- [Documentation source](src/content/docs/)
+- [Source migration mapping](MIGRATION_MANIFEST.md)
+- [Source review and integrity manifest](source-manifest.json)
+- **Future website:** https://docs.veiglbergtech.com (**not yet published**)
 
-## Development
+## Develop and test locally
 
-Node.js 22.12 or later. Run \`npm install\`, \`npm run dev\`, \`npm run build\`, \`npm run test:docs\`, \`npm run test:links\` and \`npm run test:security\`.
+Requires Node.js 22.12 or newer.
 
-Dependencies are pinned by the committed npm lockfile, with immutable pinned GitHub Actions and a high-severity vulnerability audit. Build output is intentionally not committed.
+```bash
+npm ci --no-fund --no-audit
+npm run test:docs
+npm run check
+npm run build
+npm run test:links
+npm run test:security
+npm run test:workflows
+npm run dev
+```
 
-## Publication gate
+The build bundles the pinned OpenSigWeave logo after checking its exact Git blob hash. The website is fully static; there is no server, database, CMS or external application backend.
 
-Never deploy from \`dev\` or \`beta\`. \`main\` deployment is prepared but gated by the GitHub Pages environment and manual release approval. Required GitHub repository settings and DNS are documented in \`MAINTAINERS.md\`.
+## Branch and release safety
 
-Documentation is distributed under [GPL-3.0](LICENSE), consistent with the application repository.
+Changes are prepared on **`dev`**, reviewed and validated before **`beta`**, and only after explicit maintainer authorization promoted to **`main`**. GitHub Pages deployment runs exclusively from `main` (and still requires correct Pages environment and DNS configuration). Working on `dev` does **not** publish the website. Details: [MAINTAINERS.md](MAINTAINERS.md).
+
+Documentation covers actual `2026.11-alpha` behavior, including the temporary source/GHCR revision mismatch caused by a later README-only `main` commit. Changes to the application need a new source review before docs are promoted.
+
+Copyright and license: [GPL-3.0](LICENSE). Credits: [TylerHats' original OpenSigWeave](https://github.com/TylerHats/OpenSigWeave) and the [mailcow project](https://github.com/mailcow/mailcow-dockerized), whose `MOO_FOOTER` MIME approach informed the original Rspamd work. These acknowledgments do not imply endorsement.

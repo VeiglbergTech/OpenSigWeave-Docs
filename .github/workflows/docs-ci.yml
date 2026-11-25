@@ -38,5 +38,5 @@ jobs:
         run: npm run test:browser
       - name: Detect source code and docs drift
         run: |
-          git clone --depth 1 --branch dev https://github.com/VeiglbergTech/OpenSigWeave.git "$RUNNER_TEMP/OpenSigWeave"
+          git clone --depth 1 --branch main https://github.com/VeiglbergTech/OpenSigWeave.git "$RUNNER_TEMP/OpenSigWeave"
           node scripts/verify-source.mjs "$RUNNER_TEMP/OpenSigWeave"

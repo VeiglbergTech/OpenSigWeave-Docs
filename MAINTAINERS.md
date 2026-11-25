@@ -19,7 +19,7 @@ Create rulesets for \`dev\`, \`beta\`, \`main\`: require pull requests and relev
 
 ## Versions
 
-\`src/content/docs/\` describes the current manually released stable version after release. Archive prior releases as static pages under \`src/content/docs/versions/vYYYY.MM/\` only upon approved release changes. The version archived must cite an immutable application commit SHA. Do not generate versioned pages automatically from \`dev\` or \`beta\`.
+\`src/content/docs/\` describes the latest manually approved published alpha release and its limitations after release. Archive prior releases as static pages under \`src/content/docs/versions/vYYYY.MM/\` only upon approved release changes. The version archived must cite an immutable application commit SHA. Do not generate versioned pages automatically from \`dev\` or \`beta\`.
 
 ## Known limitations / migration gate
 
