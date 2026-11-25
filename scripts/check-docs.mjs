@@ -4,7 +4,7 @@ const root=path.resolve('src/content/docs');
 const pages=[],errors=[];
 function walk(d){for(const e of fs.readdirSync(d,{withFileTypes:true})){const f=path.join(d,e.name);if(e.isDirectory())walk(f);else if(/\.(md|mdx)$/.test(f))pages.push(f)}}
 walk(root);
-const routes=new Set(pages.map(p=>path.relative(root,p).replaceAll('\\','/').replace(/\.(md|mdx)$/,'').replaceAll('.','').toLowerCase()));
+const routes=new Set(pages.map(p=>path.relative(root,p).replaceAll('\\','/').replace(/\.(md|mdx)$/,'').toLowerCase()));
 const exists=u=>{const s=decodeURIComponent(u).replace(/^\/+|\/+$/g,'').toLowerCase();return routes.has(s||'index')||routes.has(s+'/index')};
 for(const p of pages){
  const name=path.relative(root,p),body=fs.readFileSync(p,'utf8');
