@@ -1,0 +1,163 @@
+#!/usr/bin/env python3
+"""Generate complete static German language counterparts for every English page.
+
+The unprefixed English Markdown/MDX files are maintained sources. Generated /de
+Markdown is not checked into Git; translated pages are built by Astro and
+deployed as plain static HTML. Legal texts and complex MDX are human-translated.
+This script never calls a remote translator: Argos runs offline after setup.
+"""
+import hashlib
+import json
+import re
+from pathlib import Path
+
+import argostranslate.translate
+
+ROOT = Path(__file__).resolve().parent.parent
+DOCS = ROOT / "src" / "content" / "docs"
+CACHE = ROOT / ".astro" / "localization-cache.json"
+MANUAL = {
+    "impressum.md", "datenschutz.md", "markenhinweise.md",
+    "developers/content-authoring.mdx",
+}
+VERSION = "2"
+routes = set()
+for src in DOCS.rglob("*"):
+    if not src.is_file() or src.suffix not in (".md", ".mdx") or "de" == src.relative_to(DOCS).parts[0]:
+        continue
+    rel = src.relative_to(DOCS)
+    routes.add("/" + rel.with_suffix("").as_posix().replace("index", "").rstrip("/") + "/")
+routes.add("/")
+
+def de_path(path: str) -> str:
+    if path in routes:
+        return "/de" + path
+    return path
+
+link_re = re.compile(r"(?<!!)\[([^\]\n]+)\]\((/[^)]+)\)")
+fragment_re = re.compile(r"(`[^`\n]+`|\*\*[^*\n]+\*\*|(?<!\*)\*[^*\n]+\*(?!\*)|<[^>]+>)")
+def translated(text: str) -> str:
+    if not text.strip() or not re.search(r"[A-Za-z]", text):
+        return text
+    return argostranslate.translate.translate(text, "en", "de")
+
+def inline(text: str) -> str:
+    # Keep code, HTML/MDX syntax and link targets byte-for-byte.
+    parts = []
+    cursor = 0
+    for m in fragment_re.finditer(text):
+        parts.append(linked(text[cursor:m.start()]))
+        token = m.group()
+        if token.startswith("`") or token.startswith("<"):
+            parts.append(token)
+        elif token.startswith("**"):
+            parts.append("**" + linked(token[2:-2]) + "**")
+        else:
+            parts.append("*" + linked(token[1:-1]) + "*")
+        cursor = m.end()
+    parts.append(linked(text[cursor:]))
+    return "".join(parts)
+
+def linked(text: str) -> str:
+    out, cursor = [], 0
+    for m in link_re.finditer(text):
+        out.append(translated(text[cursor:m.start()]))
+        target = m.group(2)
+        # Preserve anchors, query strings and API/asset paths.
+        path, sep, suffix = re.match(r"([^?#]*)(.*)", target).groups()[0], None, None
+        match = re.match(r"([^?#]*)(.*)", target)
+        target = de_path(match.group(1)) + match.group(2)
+        out.append("[" + translated(m.group(1)) + "](" + target + ")")
+        cursor = m.end()
+    out.append(translated(text[cursor:]))
+    return "".join(out)
+
+def line_translate(line: str) -> str:
+    if not line.strip():
+        return line
+    if line.lstrip().startswith(("<!--", "-->", "import ", "export ", "<Card", "</Card", "<CardGrid", "</CardGrid")):
+        return line
+    # Leave HTML image tags and path-only content intact.
+    if line.lstrip().startswith(("http://", "https://", "curl ", "$ ", "#!/")):
+        return line
+    if re.match(r"^\s*\|", line):
+        return "|".join(inline(cell) for cell in line.split("|"))
+    prefix = re.match(r"^(\s*(?:(?:#{1,6}|>|[-+*]|\d+[.)])\s+)+)(.*)$", line)
+    if prefix:
+        return prefix.group(1) + inline(prefix.group(2))
+    return inline(line)
+
+def translate_markdown(content: str) -> str:
+    if not content.startswith("---\n"):
+        raise RuntimeError("English source lacks YAML frontmatter")
+    a, fm, body = content.split("---", 2)
+    if a != "" or not fm.startswith("\n"):
+        raise RuntimeError("Unexpected frontmatter")
+    newfm = []
+    for ln in fm.strip("\n").splitlines():
+        m = re.match(r"^(title|description):\s*(.*)$", ln)
+        if m:
+            orig = m.group(2).strip().strip('"').strip("'")
+            ln = m.group(1) + ": " + json.dumps(translated(orig), ensure_ascii=False)
+        newfm.append(ln)
+    result = []
+    in_fence = False
+    for ln in body.lstrip("\n").splitlines(keepends=True):
+        raw = ln.rstrip("\r\n")
+        if re.match(r"^\s*(?:`{3,}|~{3,})", raw):
+            in_fence = not in_fence
+            result.append(ln)
+        elif in_fence:
+            result.append(ln)
+        else:
+            result.append(line_translate(raw) + ("\n" if ln.endswith("\n") else ""))
+    if in_fence:
+        raise RuntimeError("Unterminated code block in source")
+    warning = "> **Hinweis:** Diese Übersetzung wurde automatisiert erstellt. Für sicherheitskritische Befehle und technische Details gilt die [englische Originalfassung]({url}).\n\n"
+    return "---\n" + "\n".join(newfm) + "\n---\n\n" + warning + "".join(result).lstrip("\n")
+
+def main():
+    cache = {}
+    if CACHE.exists():
+        try:
+            cache = json.loads(CACHE.read_text(encoding="utf-8"))
+        except ValueError:
+            pass
+    updated, skipped = 0, 0
+    source_files = sorted(src for src in DOCS.rglob("*") if src.is_file() and src.suffix in (".md", ".mdx") and src.relative_to(DOCS).parts[0] != "de")
+    for src in source_files:
+        rel = src.relative_to(DOCS)
+        dest = DOCS / "de" / rel
+        if rel.as_posix() in MANUAL:
+            if not dest.exists():
+                raise RuntimeError(f"Human-maintained translation missing: {dest}")
+            continue
+        if src.suffix == ".mdx":
+            raise RuntimeError(f"MDX translation needs a reviewed manual counterpart: {rel}")
+        original = src.read_text(encoding="utf-8")
+        digest = hashlib.sha256((VERSION + original).encode("utf-8")).hexdigest()
+        key = rel.as_posix()
+        if dest.is_file() and cache.get(key) == digest:
+            skipped += 1
+            continue
+        # Do not accidentally overwrite a hand-edited German translation.
+        if dest.exists() and "<!-- MACHINE-TRANSLATED -->" not in dest.read_text(encoding="utf-8"):
+            skipped += 1
+            continue
+        url = "/" + rel.with_suffix("").as_posix().replace("index", "").rstrip("/") + "/"
+        translated_file = translate_markdown(original).replace("{url}", url)
+        translated_file = translated_file.replace("\n---\n\n> **Hinweis:**", "\n---\n\n<!-- MACHINE-TRANSLATED -->\n\n> **Hinweis:**", 1)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(translated_file, encoding="utf-8")
+        cache[key] = digest
+        updated += 1
+    CACHE.parent.mkdir(parents=True, exist_ok=True)
+    CACHE.write_text(json.dumps(cache, indent=2) + "\n", encoding="utf-8")
+    # Strict completeness: no English route is allowed to lack a German file.
+    missing = [str(src.relative_to(DOCS)) for src in source_files if not (DOCS / "de" / src.relative_to(DOCS)).is_file()]
+    if missing:
+        raise RuntimeError("Missing German translations: " + ", ".join(missing))
+    print(f"German static docs complete: {len(source_files)} pairs ({updated} created/updated, {skipped} cached/manual).")
+
+if __name__ == "__main__":
+    main()

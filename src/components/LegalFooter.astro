@@ -1,14 +1,16 @@
 ---
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+const german = Astro.url.pathname.startsWith('/de/');
+const p = german ? '/de' : '';
 ---
 
 <DefaultFooter><slot /></DefaultFooter>
 
-<nav class="legal-footer" aria-label="Rechtliche Informationen">
-  <a href="/impressum/">Impressum</a>
-  <a href="/datenschutz/">Datenschutz</a>
-  <a href="/markenhinweise/">Markenhinweise</a>
-  <span>OpenSigWeave · Unabhängiges Open-Source-Projekt</span>
+<nav class="legal-footer" aria-label={german ? 'Rechtliche Informationen' : 'Legal information'}>
+  <a href={`${p}/impressum/`}>{german ? 'Impressum' : 'Imprint'}</a>
+  <a href={`${p}/datenschutz/`}>{german ? 'Datenschutz' : 'Privacy policy'}</a>
+  <a href={`${p}/markenhinweise/`}>{german ? 'Markenhinweise' : 'Trademarks & credits'}</a>
+  <span>OpenSigWeave · {german ? 'Unabhängiges Open-Source-Projekt' : 'Independent open-source project'}</span>
 </nav>
 
 <style>

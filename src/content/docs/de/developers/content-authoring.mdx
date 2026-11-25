@@ -1,0 +1,21 @@
+---
+title: Dokumentation schreiben
+description: Markdown- und MDX-Seiten in Starlight erstellen.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+Starlight unterstützt normale Markdown-Seiten und MDX mit integrierten Komponenten. Inhalte müssen statisch bleiben. Hinterlege keine privaten Zugangsdaten oder Abhängigkeiten von laufenden Anwendungsdiensten.
+
+<CardGrid>
+  <Card title="Markdown" icon="document">
+    Verwende bevorzugt Markdown für Fließtext, Codebeispiele, Hinweise und interne Verlinkungen.
+  </Card>
+  <Card title="MDX" icon="puzzle">
+    Nutze MDX nur, wenn eine integrierte Komponente die Verständlichkeit deutlich verbessert.
+  </Card>
+</CardGrid>
+
+## Bearbeitung und Prüfung
+
+Die englischen Quelldokumente werden unter `src/content/docs/` im Branch `dev` bearbeitet. Deutsche Seiten werden beim Build automatisch übersetzt; rechtliche Seiten und diese MDX-Seite werden manuell gepflegt. Vor der Übernahme nach `main` müssen `npm run build`, `npm run test:docs` und `npm run test:links` erfolgreich sein. Sicherheitsprüfungen dürfen nicht umgangen werden.

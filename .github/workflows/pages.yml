@@ -21,6 +21,11 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4 pinned
         with:
           node-version: '22'
+      - name: Prepare free offline German translation
+        run: |
+          python3 -m venv .translate-env
+          .translate-env/bin/python -m pip install --disable-pip-version-check --quiet argostranslate==1.11.1
+          .translate-env/bin/python scripts/setup_translation.py
       - name: Install and validate
         run: |
           npm ci --no-fund --no-audit

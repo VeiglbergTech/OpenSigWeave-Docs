@@ -1,38 +1,40 @@
 ---
-title: Marken- und Projekthinweise
-description: Unabhängigkeit, fremde Produktnamen, Referenzen und Urheberrechtsangaben für OpenSigWeave.
+title: Trademarks and project notices
+description: Independence, third-party marks, technical references and attribution.
 ---
 
-# Marken- und Projekthinweise
+# Trademarks and project notices
 
-## Eigenständiges Open-Source-Projekt
+## Independent open-source project
 
-**OpenSigWeave** wird als unabhängiges, privat betriebenes Open-Source-Projekt entwickelt und dokumentiert. Nennungen anderer Hersteller, Produkte und Dienste dienen ausschließlich der verständlichen technischen Beschreibung, Quellenangabe oder Abgrenzung.
+**OpenSigWeave** is developed and documented as an independent, privately operated open-source project. Other vendors, products and services are named only where needed for clear technical descriptions, source attribution or comparisons.
 
-**Die Nennung eines Unternehmens oder Produkts bedeutet weder eine geschäftliche Verbindung noch Sponsoring, Zertifizierung, Unterstützung, Zustimmung oder Empfehlung durch dessen Betreiber.** Eine solche Beziehung darf nicht aus einer bloßen Erwähnung abgeleitet werden.
+**Mentioning a company or product does not imply an affiliation, sponsorship, certification, support, approval or endorsement by its operator.** No such relationship can be inferred from a reference alone.
 
-## CodeTwo und andere Drittanbieter
+## CodeTwo and other third parties
 
-**CodeTwo** ist ein eigenständiger Anbieter von Software für E-Mail-Signaturen. OpenSigWeave wird **nicht von CodeTwo herausgegeben, betrieben, unterstützt oder zertifiziert**. Wird CodeTwo als Beispiel für ein Produkt oder eine technische Vorgehensweise genannt, ist dies eine sachliche Referenz und **keine Aussage über Kompatibilität, Gleichwertigkeit oder identische Funktionen**.
+**CodeTwo** is an independent email-signature software provider. OpenSigWeave is **not published, operated, supported or certified by CodeTwo**. References to CodeTwo as an example of a product or technical method are purely factual and **do not imply compatibility, functional equivalence or identical features**.
 
-Das Gleiche gilt bei Nennungen beispielsweise von **Microsoft / Outlook, mailcow, Rspamd, Authentik, Stalwart, GitHub, PostgreSQL, Docker** oder anderer Software. Namen, Kennzeichen und gegebenenfalls Marken stehen den jeweiligen Rechteinhabern zu. Auf dieser Website werden solche Bezeichnungen in der Regel nur als Text und gegebenenfalls als Links zur Originalquelle verwendet.
+The same applies to **Microsoft / Outlook, mailcow, Rspamd, Authentik, Stalwart, GitHub, PostgreSQL, Docker** and any other software mentioned here. Names, signs and trademarks belong to their respective rights holders. They are generally referenced only in plain text and, where appropriate, links to the original source.
 
-Konkrete **Kompatibilitäts-, Sicherheits- und Funktionsaussagen** gelten nur insoweit, wie sie in der jeweils verlinkten technischen Dokumentation ausdrücklich als getestet belegt sind. Aussagen zu experimentellen Adaptern und noch nicht durchgeführten Tests sind entsprechend gekennzeichnet. Allgemeine Produktvergleiche, unüberprüfte Überlegenheitsbehauptungen und der Eindruck einer offiziellen Partnerschaft sind nicht beabsichtigt.
+Specific **compatibility, security and feature claims** apply only to the extent supported by explicitly linked technical test evidence. Experimental adapters and tests that remain outstanding are labelled accordingly. Unsubstantiated superiority claims, general product comparisons and any impression of an official partnership are not intended.
 
-## Herkunft und Anerkennung
+## Origins and credits
 
-OpenSigWeave baut auf dem [ursprünglichen OpenSigWeave-Projekt von TylerHats](https://github.com/TylerHats/OpenSigWeave) auf. Die selbstständig weiterentwickelte Fassung wird durch den hier genannten Projektbetreiber verantwortet. Danke an die ursprünglichen Mitwirkenden.
+OpenSigWeave builds upon the [original OpenSigWeave project by TylerHats](https://github.com/TylerHats/OpenSigWeave). The further-developed fork is maintained independently by this website's project operator. Thanks to the original contributors.
 
-Die ursprüngliche Rspamd-/MIME-Integration wurde außerdem von Ansätzen aus dem Open-Source-Ökosystem von [mailcow](https://github.com/mailcow/mailcow-dockerized) beeinflusst, insbesondere dem `MOO_FOOTER`-Ansatz. Diese Würdigung stellt **keine offizielle Zusammenarbeit oder Billigung durch mailcow** dar.
+The original Rspamd/MIME integration was also influenced by approaches from the [mailcow](https://github.com/mailcow/mailcow-dockerized) open-source ecosystem, particularly the `MOO_FOOTER` approach. This acknowledgment **does not imply official collaboration with or endorsement by mailcow**.
 
-Maßgeblich für die Nutzung und Weitergabe des jeweiligen Quellcodes sind die **konkret anwendbaren Open-Source-Lizenzen und Rechtehinweise** in den jeweiligen Repositories. Dieser Hinweis ersetzt weder Lizenztexte noch erforderliche Urhebervermerke.
+The applicable **open-source licences and copyright notices** in each repository govern the use and redistribution of the relevant code. This notice does not replace required licence texts or copyright statements.
 
-## Referenzen und Inhalte
+## References and content
 
-- Fremde Logos, Screenshots, Produktabbildungen und geschützte Textpassagen dürfen nicht allein aufgrund einer hier erfolgten Markennennung übernommen werden.
-- Technische Hinweise zu Drittprodukten sind keine verbindlichen Herstellerangaben. Für eine Konfiguration sollten die aktuellen Originalunterlagen des jeweiligen Herstellers geprüft werden.
-- Bei Hinweisen auf unzutreffende Quellen, Namensverwendungen oder Rechtefragen wenden Sie sich an [info@veiglbergtech.com](mailto:info@veiglbergtech.com).
+- Third-party logos, screenshots, product images and protected passages may not be reproduced merely because a third-party trademark is mentioned.
+- Technical information about external products is not an authoritative vendor statement. Consult the vendor's current original documentation before configuring the software.
+- To report incorrect sources, name usage or rights questions, contact [info@veiglbergtech.com](mailto:info@veiglbergtech.com).
 
-Weitere Angaben: [Impressum](/impressum/) und [Datenschutz](/datenschutz/).
+Further information: [Imprint](/impressum/) and [Privacy policy](/datenschutz/).
 
-**Stand:** 25. November 2026
+**Last updated:** 25 November 2026
+
+The [German original](/de/markenhinweise/) is also available.

@@ -5,27 +5,24 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "predev": "node scripts/localize.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "precheck": "node scripts/localize.mjs && node scripts/fetch-assets.mjs",
     "test:docs": "node scripts/check-docs.mjs",
+    "pretest:docs": "node scripts/localize.mjs",
     "test:links": "node scripts/check-links.mjs",
     "test:security": "node scripts/check-security.mjs",
-    "precheck": "node scripts/fetch-assets.mjs",
-    "prebuild": "node scripts/fetch-assets.mjs",
+    "prebuild": "node scripts/localize.mjs && node scripts/fetch-assets.mjs",
     "test:browser": "node scripts/browser-smoke.mjs",
     "test:workflows": "node scripts/check-workflows.mjs"
   },
-  "engines": {
-    "node": ">=22.12.0"
-  },
+  "engines": { "node": ">=22.12.0" },
   "dependencies": {
     "astro": "7.4.13",
     "@astrojs/starlight": "0.43.1",
     "@astrojs/mdx": "8.1.6"
   },
-  "devDependencies": {
-    "@astrojs/check": "0.9.12",
-    "typescript": "5.9.3"
-  }
+  "devDependencies": { "@astrojs/check": "0.9.12", "typescript": "5.9.3" }
 }

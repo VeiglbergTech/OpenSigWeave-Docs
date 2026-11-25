@@ -9,8 +9,12 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'OpenSigWeave',
-      description: 'Official documentation for OpenSigWeave, the self-hosted email-signature management service.',
-      // The pinned original project logo is verified and bundled locally by scripts/fetch-assets.mjs.
+      description: 'Official English and German documentation for the self-hosted OpenSigWeave email-signature manager.',
+      defaultLocale: 'root',
+      locales: {
+        root: { label: 'English', lang: 'en' },
+        de: { label: 'Deutsch', lang: 'de' },
+      },
       logo: { src: './src/assets/opensigweave.png', alt: 'OpenSigWeave', replacesTitle: false },
       favicon: '/favicon.png',
       customCss: ['./src/styles/theme.css'],
@@ -19,14 +23,14 @@ export default defineConfig({
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/VeiglbergTech/OpenSigWeave' }],
       pagefind: true,
       sidebar: [
-        { label: 'Overview', items: [{ slug: 'index' }] },
-        { label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started' } }] },
-        { label: 'Installation', items: [{ autogenerate: { directory: 'installation' } }] },
-        { label: 'Administration', items: [{ autogenerate: { directory: 'administration' } }] },
-        { label: 'Operations', items: [{ autogenerate: { directory: 'operations' } }] },
-        { label: 'Developers', items: [{ autogenerate: { directory: 'developers' } }] },
-        { label: 'Releases', items: [{ autogenerate: { directory: 'releases' } }] },
-        { label: 'Technical references', collapsed: true, items: [{ autogenerate: { directory: 'reference' } }] },
+        { label: 'Overview', translations: { de: 'Übersicht' }, items: [{ slug: 'index' }] },
+        { label: 'Getting Started', translations: { de: 'Erste Schritte' }, items: [{ autogenerate: { directory: 'getting-started' } }] },
+        { label: 'Installation', translations: { de: 'Installation' }, items: [{ autogenerate: { directory: 'installation' } }] },
+        { label: 'Administration', translations: { de: 'Administration' }, items: [{ autogenerate: { directory: 'administration' } }] },
+        { label: 'Operations', translations: { de: 'Betrieb' }, items: [{ autogenerate: { directory: 'operations' } }] },
+        { label: 'Developers', translations: { de: 'Entwicklung' }, items: [{ autogenerate: { directory: 'developers' } }] },
+        { label: 'Releases', translations: { de: 'Versionen' }, items: [{ autogenerate: { directory: 'releases' } }] },
+        { label: 'Technical references', translations: { de: 'Technische Referenzen' }, collapsed: true, items: [{ autogenerate: { directory: 'reference' } }] },
       ],
       head: [
         { tag: 'meta', attrs: { property: 'og:site_name', content: 'OpenSigWeave Docs' } },

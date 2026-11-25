@@ -7,3 +7,11 @@ dist/
 .env.*
 !.env.example
 src/assets/opensigweave.png
+.translate-env/
+# Generated German pages are artifacts; legal/MDX translations are human-authored.
+src/content/docs/de/**/*.md
+src/content/docs/de/**/*.mdx
+!src/content/docs/de/impressum.md
+!src/content/docs/de/datenschutz.md
+!src/content/docs/de/markenhinweise.md
+!src/content/docs/de/developers/content-authoring.mdx

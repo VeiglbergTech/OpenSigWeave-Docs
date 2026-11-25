@@ -1,29 +1,31 @@
 ---
-title: Impressum
-description: Anbieterkennzeichnung für die OpenSigWeave-Dokumentationswebsite.
+title: Imprint
+description: Legal provider details for the OpenSigWeave documentation website.
 ---
 
-# Impressum
+# Imprint
 
-**Angaben zur Anbieterkennzeichnung gemäß § 18 Abs. 1 Medienstaatsvertrag (MStV).** Soweit einschlägig gelten ergänzend die Anforderungen des § 5 Digitale-Dienste-Gesetz (DDG).
+**Provider information pursuant to Section 18(1) of the German Interstate Media Treaty (MStV).** Where applicable, the requirements of Section 5 of the German Digital Services Act (DDG) also apply.
 
 **Martin Leonhard Walleitner**  
 Brunnlachweg 9  
 82544 Neufahrn  
-Bayern, Deutschland
+Bavaria, Germany
 
-**E-Mail:** [info@veiglbergtech.com](mailto:info@veiglbergtech.com)
+**Email:** [info@veiglbergtech.com](mailto:info@veiglbergtech.com)
 
-## Anbieter und Projekt
+## Operator and project
 
-Diese Website ist die Dokumentation des **privat und unabhängig betriebenen Open-Source-Projekts OpenSigWeave**. Die Bezeichnung **VeiglbergTech** wird als Projekt- bzw. Veröffentlichungsbezeichnung verwendet; sie bezeichnet in diesem Zusammenhang keine eigenständige juristische Person.
+This website provides documentation for **OpenSigWeave, an independently operated private open-source project**. The name **VeiglbergTech** serves as a project and publication name and, in this context, does not designate a separate legal entity.
 
-Inhaltlich verantwortlich und Ansprechpartner für diese Website ist Martin Leonhard Walleitner unter der oben genannten Anschrift.
+Martin Leonhard Walleitner is the person responsible for this website's content and can be contacted at the address above.
 
-## Fremde Marken, Produktnamen und Quellen
+## Third-party trademarks, product names and sources
 
-Namen wie CodeTwo, Microsoft Outlook, mailcow, Rspamd, Authentik oder GitHub werden, soweit sie in der Dokumentation vorkommen, ausschließlich zur sachlichen Beschreibung oder Identifizierung der jeweiligen Drittprodukte verwendet. Daraus folgt **keine** Partnerschaft, Zertifizierung, Unterstützung oder Empfehlung durch die jeweiligen Rechteinhaber. Details und Projekt-Credits stehen in den [Marken- und Projekthinweisen](/markenhinweise/).
+Names such as CodeTwo, Microsoft Outlook, mailcow, Rspamd, Authentik and GitHub are used solely to identify or factually describe third-party products. No partnership, certification, support or endorsement by the relevant rights holders is implied. For details and credits, see our [trademark and project notices](/markenhinweise/).
 
-Unsere [Datenschutzerklärung](/datenschutz/) erläutert die Datenverarbeitung beim Besuch dieser Website.
+The [privacy policy](/datenschutz/) explains how information is processed when this website is visited.
 
-**Stand:** 25. November 2026
+**Last updated:** 25 November 2026
+
+The [German original](/de/impressum/) is available for reference.
